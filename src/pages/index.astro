@@ -4,7 +4,7 @@ import CalculatorCard from "../components/CalculatorCard.astro";
 import FAQSection from "../components/FAQSection.astro";
 import CTASection from "../components/CTASection.astro";
 import { Icon } from "astro-icon/components";
-import { websiteSchema } from "../lib/seo/structured-data";
+import { websiteSchema, faqSchema } from "../lib/seo/structured-data";
 
 const calculators = [
   { href: "/concrete-calculator", label: "Concrete Calculator", description: "Calculate concrete volume, weight, and bag requirements", icon: "calculator" },
@@ -40,7 +40,7 @@ const faqs = [
 <BaseLayout
   title="SolidCalc - Free Concrete & Construction Material Calculator"
   description="Free online concrete calculator and construction material calculator. Accurately calculate concrete volume, slab materials, footing, column, wall, and stairs requirements. Trusted by contractors and builders."
-  structuredData={[websiteSchema()]}
+  structuredData={[websiteSchema(), faqSchema(faqs)]}
 >
   <!-- Hero -->
   <section class="min-h-[85vh] flex items-center justify-center bg-canvas pt-11">
