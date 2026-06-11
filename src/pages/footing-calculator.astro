@@ -1,0 +1,123 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CalculatorBase from "../components/CalculatorBase.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+import { META_DESCRIPTIONS } from "../lib/seo/keywords";
+---
+
+<BaseLayout
+  title="Footing Calculator - Continuous, Square & Circular Footings"
+  description={META_DESCRIPTIONS.footing}
+  canonical="https://solidcalc.vercel.app/footing-calculator"
+  structuredData={[
+    softwareAppSchema("Footing Calculator", META_DESCRIPTIONS.footing, "https://solidcalc.vercel.app/footing-calculator"),
+    faqSchema([
+      { question: "What is a continuous footing?", answer: "A continuous footing (strip footing) runs along the length of a wall to distribute its load to the soil. It's the most common type for load-bearing walls." },
+      { question: "How do I calculate footing concrete volume?", answer: "Multiply length × width × depth for continuous or square footings. For circular footings, use π × radius² × depth." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Footing Calculator", url: "/footing-calculator" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Footing Calculator</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate concrete volume and materials for continuous, square, and circular footings. Essential for foundation design and estimation.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container">
+          <div class="mb-6">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide mb-3">Footing Type</h3>
+            <div class="flex flex-wrap gap-2">
+              {["continuous", "square", "circular"].map((t) => (
+                <label class="flex items-center gap-2 px-4 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                  <input type="radio" name="footing-type" value={t} checked={t === "continuous"} class="sr-only" />
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <CalculatorBase
+            calculatorId="footing-calc"
+            inputs={[
+              {
+                id: "dimensions",
+                label: "Dimensions",
+                fields: [
+                  { id: "length", label: "Length", placeholder: "e.g. 30", defaultValue: "30" },
+                  { id: "width", label: "Width", placeholder: "e.g. 2", defaultValue: "2" },
+                  { id: "depth", label: "Depth", placeholder: "e.g. 1", defaultValue: "1" },
+                  { id: "side", label: "Side (Square)", placeholder: "e.g. 3", defaultValue: "3" },
+                  { id: "diameter", label: "Diameter (Circular)", placeholder: "e.g. 3", defaultValue: "3" },
+                  { id: "count", label: "Number of Footings", placeholder: "e.g. 1", defaultValue: "1" },
+                ],
+              },
+            ]}
+            outputs={[
+              {
+                id: "volume-results",
+                label: "Results",
+                fields: [
+                  { id: "volumeM3", label: "Total Volume", unit: "m³" },
+                  { id: "cementKg", label: "Cement", unit: "kg" },
+                  { id: "sandKg", label: "Sand", unit: "kg" },
+                  { id: "aggregateKg", label: "Aggregate", unit: "kg" },
+                  { id: "cementBags", label: "Cement Bags Required", highlight: true },
+                ],
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Unit Selection</h3>
+          <div class="flex flex-wrap gap-2">
+            {["ft", "in", "m", "cm", "mm"].map((u) => (
+              <label class="flex items-center gap-2 px-3 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                <input type="radio" name="unit" value={u} checked={u === "ft"} class="sr-only" />
+                {u}
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Volume = Length × Width × Depth (rectangular) | Volume = π × r² × Depth (circular)"
+    steps={[
+      "Select the type of footing: continuous, square, or circular.",
+      "Enter the required dimensions. For continuous footings: length, width, depth. For square: side, depth. For circular: diameter, depth.",
+      "Specify the number of identical footings.",
+      "Add wastage allowance (typically 5-10%).",
+      "The calculator computes total concrete volume and material quantities.",
+    ]}
+    example={`Example: Continuous Footing\n\nLength: 30 ft, Width: 2 ft, Depth: 1 ft\nVolume = 30 × 2 × 1 = 60 ft³ = 1.70 m³\n\nWith 5% wastage: 1.79 m³\n\nMaterials:\nCement: 0.50 tons → 10 bags (50 kg)\nSand: 0.75 tons\nAggregate: 1.50 tons`}
+    relatedCalculators={[
+      { href: "/concrete-calculator", label: "Concrete Calculator" },
+      { href: "/column-calculator", label: "Column Calculator" },
+      { href: "/wall-calculator", label: "Wall Calculator" },
+      { href: "/material-calculator", label: "Material Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "When should I use a continuous vs square footing?", answer: "Continuous footings are used for load-bearing walls. Square footings (isolated) are used for individual columns. Circular footings are used for round columns or piers." },
+    { question: "How deep should a footing be?", answer: "Footing depth depends on soil conditions and frost line. Typically 12-24 inches deep. Always consult local building codes." },
+    { question: "Do footings need reinforcement?", answer: "Yes, most footings require reinforcement to handle tensile stresses. Use rebar as per structural engineering specifications." },
+  ]} />
+<script>
+  import "../lib/client-calculator";
+</script>
+
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+export interface Props {
+  id: string;
+  label: string;
+  type?: "text" | "number" | "select";
+  placeholder?: string;
+  value?: string | number;
+  min?: number;
+  max?: number;
+  step?: string;
+  options?: { value: string; label: string }[];
+}
+const { id, label, type = "number", placeholder, value, min, max, step, options } = Astro.props;
+---
+
+<div class="flex flex-col gap-1.5">
+  <label for={id} class="text-caption text-ink-muted-80 font-medium">{label}</label>
+  {
+    type === "select" ? (
+      <select
+        id={id}
+        class="input-field appearance-none cursor-pointer"
+      >
+        {options?.map((opt) => (
+          <option value={opt.value} selected={opt.value === value}>{opt.label}</option>
+        ))}
+      </select>
+    ) : (
+      <input
+        type={type}
+        id={id}
+        placeholder={placeholder}
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        class="input-field"
+      />
+    )
+  }
+</div>

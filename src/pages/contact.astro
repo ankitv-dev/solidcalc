@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+---
+
+<BaseLayout
+  title="Contact Us - SolidCalc Support"
+  description="Get in touch with SolidCalc. Contact us with questions, feedback, or suggestions about our concrete calculators and construction tools."
+  canonical="https://solidcalc.vercel.app/contact"
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Contact Us", url: "/contact" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section text-center">
+    <h1 class="text-display-lg text-ink mb-3">Contact Us</h1>
+    <p class="text-lg text-ink-muted-80 max-w-2xl mx-auto mb-10">Reach out to us anytime.</p>
+
+    <div class="max-w-md mx-auto">
+      <div class="card-container">
+        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <p class="text-body text-ink break-all">ankit.kumar.verma.dev@gmail.com</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

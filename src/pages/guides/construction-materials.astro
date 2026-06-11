@@ -1,0 +1,107 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CTASection from "../../components/CTASection.astro";
+import FAQSection from "../../components/FAQSection.astro";
+import { articleSchema, faqSchema } from "../../lib/seo/structured-data";
+---
+
+<BaseLayout
+  title="Construction Materials Guide - Cement, Sand, Aggregate & Steel"
+  description="Complete guide to construction materials. Learn about cement types, sand specifications, aggregate grades, steel reinforcement, and quality testing for construction."
+  canonical="https://solidcalc.vercel.app/guides/construction-materials"
+  structuredData={[
+    articleSchema("Construction Materials: Complete Guide", "Guide to construction materials.", "https://solidcalc.vercel.app/guides/construction-materials", "2024-01-01"),
+    faqSchema([
+      { question: "What are the main materials used in concrete?", answer: "The four main ingredients are cement, fine aggregate (sand), coarse aggregate (gravel/crushed stone), and water. Admixtures may be added for specific properties." },
+      { question: "How do I check the quality of construction materials?", answer: "Conduct standard tests: fineness and consistency tests for cement, sieve analysis for aggregates, and slump test for fresh concrete." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Construction Materials Guide", url: "/guides/construction-materials" }]} />
+  <article class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <header class="mb-12">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary text-caption font-medium px-4 py-2 rounded-pill mb-4">Knowledge Base</div>
+      <h1 class="text-hero text-ink mb-4">Construction Materials: Complete Guide</h1>
+      <p class="text-lead text-ink-muted-80 max-w-2xl">A comprehensive guide to the materials used in concrete construction, including quality requirements, testing, and best practices.</p>
+    </header>
+    <div class="max-w-3xl">
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Cement</h2>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">Cement is the binding agent in concrete. The most common types are OPC (Ordinary Portland Cement) and PPC (Portland Pozzolana Cement).</p>
+        <div class="card-container mb-4">
+          <h3 class="text-body-strong text-ink mb-2">Key Properties</h3>
+          <ul class="text-body text-ink-muted-80 space-y-1 list-disc list-inside">
+            <li>Initial setting time: minimum 30 minutes</li>
+            <li>Final setting time: maximum 600 minutes</li>
+            <li>Specific gravity: 3.15</li>
+            <li>Density: 1440 kg/m³</li>
+            <li>Standard consistency: 28-35% water by weight</li>
+          </ul>
+        </div>
+      </section>
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Fine Aggregate (Sand)</h2>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">Sand fills voids between coarse aggregates and provides workability. It should be clean, hard, and free from organic impurities.</p>
+        <div class="card-container mb-4">
+          <h3 class="text-body-strong text-ink mb-2">Sand Grading Zones</h3>
+          <p class="text-body text-ink-muted-80 mb-3">As per IS 383, sand is classified into four zones based on particle size distribution:</p>
+          <ul class="text-body text-ink-muted-80 space-y-1 list-disc list-inside">
+            <li>Zone I: Coarser sand (higher percentage of larger particles)</li>
+            <li>Zone II: Medium sand (ideal for general construction)</li>
+            <li>Zone III: Fine sand</li>
+            <li>Zone IV: Very fine sand</li>
+          </ul>
+        </div>
+      </section>
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Coarse Aggregate</h2>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">Crushed stone or gravel provides the structural framework of concrete. Common sizes are 20mm and 40mm nominal size.</p>
+        <div class="card-container mb-4">
+          <h3 class="text-body-strong text-ink mb-2">Quality Requirements</h3>
+          <ul class="text-body text-ink-muted-80 space-y-1 list-disc list-inside">
+            <li>Crushing value: Max 30% for structural concrete</li>
+            <li>Impact value: Max 30% for structural concrete</li>
+            <li>Flakiness index: Max 15%</li>
+            <li>Elongation index: Max 15%</li>
+            <li>Water absorption: Max 2%</li>
+          </ul>
+        </div>
+      </section>
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Steel Reinforcement</h2>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">Steel reinforcement provides tensile strength to concrete structures. Common grades include Fe415, Fe500, and Fe550.</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left card-container">
+            <thead>
+              <tr class="border-b border-divider-soft">
+                <th class="py-3 px-4 text-caption-strong text-ink">Grade</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Yield Strength</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Ultimate Strength</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Common Uses</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-divider-soft">
+              {[
+                ["Fe415", "415 MPa", "485 MPa", "General RCC construction"],
+                ["Fe500", "500 MPa", "545 MPa", "High-rise buildings, bridges"],
+                ["Fe550", "550 MPa", "585 MPa", "Heavy structures, industrial"],
+                ["Fe600", "600 MPa", "650 MPa", "Pre-stressed concrete"],
+              ].map((row) => (
+                <tr class="hover:bg-canvas-parchment transition-colors">
+                  {row.map((cell) => (<td class="py-3 px-4 text-body text-ink-muted-80">{cell}</td>))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </article>
+  <CTASection title="Calculate Your Material Requirements" description="Use our Material Calculator for accurate cement, sand, and aggregate quantities." ctaText="Try Material Calculator" ctaHref="/material-calculator" />
+  <FAQSection items={[
+    { question: "How should I store construction materials on site?", answer: "Cement in dry covered area, sand on hard surface to prevent soil mixing, aggregate in graded piles, and steel under cover to prevent rusting." },
+    { question: "What is bulking of sand?", answer: "Bulking is the increase in sand volume due to moisture. Surface moisture causes sand particles to separate, increasing volume by up to 35%." },
+    { question: "How do I test concrete quality on site?", answer: "Perform slump test for workability, take cube samples for compressive strength testing, and check temperature of fresh concrete." },
+  ]} />
+</BaseLayout>

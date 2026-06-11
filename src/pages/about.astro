@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CTASection from "../components/CTASection.astro";
+import { softwareAppSchema } from "../lib/seo/structured-data";
+---
+
+<BaseLayout
+  title="About Us - SolidCalc Concrete & Construction Calculators"
+  description="Learn about SolidCalc — our mission to provide accurate, free concrete calculators and construction material estimators for contractors, engineers, and builders worldwide."
+  canonical="https://solidcalc.vercel.app/about"
+  structuredData={[
+    softwareAppSchema("SolidCalc", "Professional concrete and construction material calculators.", "https://solidcalc.vercel.app"),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "About Us", url: "/about" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <h1 class="text-display-lg text-ink mb-3">About SolidCalc</h1>
+    <p class="text-lg text-ink-muted-80 max-w-2xl mb-10">Professional concrete calculators built for accuracy and ease of use.</p>
+
+    <div class="max-w-3xl space-y-8">
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Our Mission</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          SolidCalc was created to provide contractors, engineers, architects, and homeowners with accurate, easy-to-use concrete calculators. We believe that construction professionals deserve tools that are as professional as their work — fast, precise, and reliable.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Why SolidCalc?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[
+            { title: "Accuracy First", desc: "Industry-standard formulas and up-to-date material data ensure reliable results every time." },
+            { title: "No Hidden Costs", desc: "All our calculators are completely free. No sign-ups, no subscriptions, no limitations." },
+            { title: "Built for Professionals", desc: "Clean, fast, and mobile-friendly interfaces designed for real construction workflows." },
+            { title: "Comprehensive Suite", desc: "From simple volume calculations to detailed mix design, we cover all concrete estimation needs." },
+          ].map((item) => (
+            <div class="card-container">
+              <h3 class="text-body-strong text-ink mb-2">{item.title}</h3>
+              <p class="text-body text-ink-muted-80">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Our Calculators</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          We offer a complete suite of concrete calculators including concrete volume, slab, footing, column, wall, stairs, cement, material, mix design, and unit conversion tools. Each calculator is designed to provide instant, accurate results with a clean user experience.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Technology</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          Built with modern web technologies including Astro and Tailwind CSS, SolidCalc delivers fast load times, excellent accessibility, and a premium user experience on any device.
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <CTASection
+    title="Start Calculating"
+    description="Try our free concrete calculators for your next project."
+    ctaText="Try Concrete Calculator"
+    ctaHref="/concrete-calculator"
+  />
+</BaseLayout>

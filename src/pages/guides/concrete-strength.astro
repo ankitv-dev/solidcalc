@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CTASection from "../../components/CTASection.astro";
+import FAQSection from "../../components/FAQSection.astro";
+import { articleSchema, faqSchema } from "../../lib/seo/structured-data";
+---
+
+<BaseLayout
+  title="Concrete Strength Guide - Compressive, Tensile & Flexural"
+  description="Complete guide to concrete strength. Learn about compressive strength, tensile strength, flexural strength, factors affecting strength, and testing methods."
+  canonical="https://solidcalc.vercel.app/guides/concrete-strength"
+  structuredData={[
+    articleSchema("Concrete Strength: Compressive, Tensile & Flexural Guide", "Guide to concrete strength properties.", "https://solidcalc.vercel.app/guides/concrete-strength", "2024-01-01"),
+    faqSchema([
+      { question: "What is the compressive strength of M20 concrete?", answer: "M20 concrete has a characteristic compressive strength of 20 MPa (megapascals) at 28 days, equivalent to about 2,900 psi." },
+      { question: "How does concrete gain strength over time?", answer: "Concrete gains about 40% strength in 3 days, 65% in 7 days, 90% in 14 days, and 100% in 28 days under proper curing conditions." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Concrete Strength Guide", url: "/guides/concrete-strength" }]} />
+  <article class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <header class="mb-12">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary text-caption font-medium px-4 py-2 rounded-pill mb-4">Knowledge Base</div>
+      <h1 class="text-hero text-ink mb-4">Concrete Strength: Complete Guide</h1>
+      <p class="text-lead text-ink-muted-80 max-w-2xl">Understanding concrete strength properties is essential for structural design. This guide covers compressive, tensile, and flexural strength of concrete.</p>
+    </header>
+    <div class="max-w-3xl">
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Types of Concrete Strength</h2>
+        <div class="space-y-4">
+          {[
+            { title: "Compressive Strength", desc: "The ability to resist axial loads. Measured in MPa or psi. This is the primary strength property used in structural design. Tested using 150mm cubes or 300mm×150mm cylinders at 28 days." },
+            { title: "Tensile Strength", desc: "Concrete is weak in tension, typically 10-15% of compressive strength. Split cylinder test and flexural test are used to measure tensile properties." },
+            { title: "Flexural Strength", desc: "Also called modulus of rupture, measured by bending tests on concrete beams. Important for pavement and slab design." },
+            { title: "Shear Strength", desc: "Concrete's resistance to shear forces. Important in beam design, especially near supports where shear forces are highest." },
+          ].map((type) => (
+            <div class="card-container">
+              <h3 class="text-body-strong text-ink mb-2">{type.title}</h3>
+              <p class="text-body text-ink-muted-80">{type.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Factors Affecting Concrete Strength</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left card-container">
+            <thead>
+              <tr class="border-b border-divider-soft">
+                <th class="py-3 px-4 text-caption-strong text-ink">Factor</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Impact</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-divider-soft">
+              {[
+                ["Water-Cement Ratio", "Lower w/c = Higher strength. Most important factor."],
+                ["Cement Content", "More cement = Higher strength (up to a limit)."],
+                ["Aggregate Quality", "Strong, clean aggregates improve concrete strength."],
+                ["Age", "Strength increases with age. 70% at 7 days, 100% at 28 days."],
+                ["Curing", "Proper curing can increase strength by 30-50% vs uncured."],
+                ["Temperature", "Higher temperature accelerates strength gain but may reduce ultimate strength."],
+              ].map((row) => (
+                <tr class="hover:bg-canvas-parchment transition-colors">
+                  {row.map((cell) => (<td class="py-3 px-4 text-body text-ink-muted-80">{cell}</td>))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </article>
+  <CTASection title="Design Your Concrete Mix" description="Use our Mix Design Calculator for precise concrete proportions." ctaText="Try Mix Design Calculator" ctaHref="/mix-design-calculator" />
+  <FAQSection items={[
+    { question: "What is the characteristic strength of concrete?", answer: "Characteristic strength is the strength below which no more than 5% of test results fall. It's the design strength specified in structural codes." },
+    { question: "How is concrete strength tested?", answer: "Compressive strength is tested by crushing concrete cubes (150mm) or cylinders after 7, 14, or 28 days of curing in controlled conditions." },
+    { question: "What is the target mean strength?", answer: "Target mean strength = characteristic strength + margin. The margin accounts for variations in materials, mixing, testing, and curing conditions." },
+  ]} />
+</BaseLayout>

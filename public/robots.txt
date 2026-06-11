@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://solidcalc.vercel.app/sitemap.xml

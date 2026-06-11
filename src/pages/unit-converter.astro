@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CalculatorBase from "../components/CalculatorBase.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+import { META_DESCRIPTIONS } from "../lib/seo/keywords";
+---
+
+<BaseLayout
+  title="Unit Converter - Metric & Imperial Construction Units"
+  description={META_DESCRIPTIONS.converter}
+  canonical="https://solidcalc.vercel.app/unit-converter"
+  structuredData={[
+    softwareAppSchema("Unit Converter", META_DESCRIPTIONS.converter, "https://solidcalc.vercel.app/unit-converter"),
+    faqSchema([
+      { question: "How do I convert between metric and imperial units?", answer: "Select the source unit, enter the value, and select the target unit. Our converter handles instant conversion between all common construction units." },
+      { question: "What is the conversion factor for cubic feet to cubic meters?", answer: "1 cubic foot = 0.0283168 cubic meters. To convert ft³ to m³, multiply by 0.0283." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Unit Converter", url: "/unit-converter" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Unit Converter</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Convert between metric and imperial units for construction measurements. Supports mixed-unit input for maximum flexibility.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container">
+          <div class="mb-6">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide mb-3">From</h3>
+            <select id="from-unit" class="input-field mb-4">
+              {["mm", "cm", "m", "in", "ft", "yd"].map((u) => (
+                <option value={u} selected={u === "m"}>{u}</option>
+              ))}
+            </select>
+          </div>
+
+          <CalculatorBase
+            calculatorId="converter-calc"
+            wastageOptions={false}
+            inputs={[
+              {
+                id: "value-input",
+                label: "",
+                fields: [
+                  { id: "convertValue", label: "Value", placeholder: "e.g. 10", defaultValue: "10", step: "any" },
+                ],
+              },
+            ]}
+            outputs={[
+              {
+                id: "converted",
+                label: "Converted To",
+                fields: [
+                  { id: "convertedResult", label: "Result", highlight: true },
+                ],
+              },
+            ]}
+          />
+          <div class="mt-4">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide mb-3">To</h3>
+            <select id="to-unit" class="input-field">
+              {["mm", "cm", "m", "in", "ft", "yd"].map((u) => (
+                <option value={u} selected={u === "ft"}>{u}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Quick Conversions</h3>
+          <div class="space-y-2 text-caption text-ink-muted-80">
+            <p><strong class="text-ink">1 m</strong> = 3.281 ft</p>
+            <p><strong class="text-ink">1 ft</strong> = 0.305 m</p>
+            <p><strong class="text-ink">1 m³</strong> = 35.315 ft³</p>
+            <p><strong class="text-ink">1 ft³</strong> = 0.028 m³</p>
+            <p><strong class="text-ink">1 yd³</strong> = 0.765 m³</p>
+            <p><strong class="text-ink">1 inch</strong> = 25.4 mm</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Result = Value × (Conversion Factor)"
+    steps={[
+      "Select the source unit from the 'From' dropdown.",
+      "Enter the value you want to convert.",
+      "Select the target unit from the 'To' dropdown.",
+      "Click Calculate to get the converted value.",
+      "The converter handles all common construction length units.",
+    ]}
+    example={`Length Conversions:\n\n10 meters to feet: 10 × 3.281 = 32.81 ft\n20 feet to meters: 20 × 0.305 = 6.10 m\n100 mm to inches: 100 ÷ 25.4 = 3.94 in\n5 yards to meters: 5 × 0.914 = 4.57 m\n\nVolume Conversions:\n\n100 ft³ to m³: 100 × 0.0283 = 2.83 m³\n10 m³ to yd³: 10 × 1.308 = 13.08 yd³`}
+    relatedCalculators={[
+      { href: "/concrete-calculator", label: "Concrete Calculator" },
+      { href: "/slab-calculator", label: "Slab Calculator" },
+      { href: "/material-calculator", label: "Material Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "Can I convert volume units?", answer: "This converter handles length units. For volume conversions, 1 m³ = 35.315 ft³ = 1.308 yd³. Use the Concrete Calculator for automatic volume conversions." },
+    { question: "Does the converter handle mixed units?", answer: "Yes! You can convert between any supported units. The calculator handles all conversions in a single step." },
+    { question: "Are the conversion factors accurate for construction?", answer: "Yes, all conversion factors follow international standards (SI system and US customary units) used in construction worldwide." },
+  ]} />
+<script>
+  import "../lib/client-calculator";
+</script>
+
+</BaseLayout>

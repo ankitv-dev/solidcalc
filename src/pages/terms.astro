@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+---
+
+<BaseLayout
+  title="Terms & Conditions"
+  description="SolidCalc terms and conditions governing the use of our concrete calculators, construction tools, and website content."
+  canonical="https://solidcalc.vercel.app/terms"
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Terms & Conditions", url: "/terms" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <h1 class="text-display-lg text-ink mb-3">Terms & Conditions</h1>
+    <p class="text-lg text-ink-muted-80 mb-10">Last updated: June 2026</p>
+
+    <div class="max-w-3xl space-y-8">
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Acceptance of Terms</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          By using SolidCalc, you agree to these terms and conditions. If you do not agree, please do not use our website.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Use of Calculators</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          Our calculators provide estimates for informational purposes only. While we strive for accuracy, results should be verified by a qualified professional before making construction decisions. SolidCalc is not responsible for any losses or damages resulting from the use of our tools.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Accuracy of Information</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          We make every effort to ensure the accuracy of our calculators and content. However, construction standards, material properties, and building codes vary by location and may change over time. Always consult local building codes and professional engineers for critical applications.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Intellectual Property</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          All content, design, code, and tools on SolidCalc are the property of SolidCalc unless otherwise noted. You may not reproduce, distribute, or modify our content without permission.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Limitation of Liability</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          SolidCalc provides tools and information "as is" without any warranty. We shall not be liable for any direct, indirect, incidental, or consequential damages arising from the use of our website.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-display-md text-ink mb-3">Changes to Terms</h2>
+        <p class="text-body text-ink-muted-80 leading-relaxed">
+          We reserve the right to update these terms at any time. Continued use of the website after changes constitutes acceptance of the new terms.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

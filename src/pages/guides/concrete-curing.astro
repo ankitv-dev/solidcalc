@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CTASection from "../../components/CTASection.astro";
+import FAQSection from "../../components/FAQSection.astro";
+import { articleSchema, faqSchema } from "../../lib/seo/structured-data";
+---
+
+<BaseLayout
+  title="Concrete Curing Guide - Methods, Duration & Best Practices"
+  description="Complete guide to concrete curing. Learn about curing methods, duration, temperature requirements, and best practices for achieving maximum concrete strength."
+  canonical="https://solidcalc.vercel.app/guides/concrete-curing"
+  structuredData={[
+    articleSchema("Concrete Curing: Methods, Duration & Best Practices", "Guide to concrete curing.", "https://solidcalc.vercel.app/guides/concrete-curing", "2024-01-01"),
+    faqSchema([
+      { question: "How long should concrete be cured?", answer: "Minimum 7 days for ordinary Portland cement. 10-14 days for slower-setting cements. Higher temperatures reduce curing time." },
+      { question: "Can you cure concrete in cold weather?", answer: "Yes, but concrete temperature should be maintained above 5°C. Use insulated blankets or heated enclosures in freezing conditions." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Concrete Curing Guide", url: "/guides/concrete-curing" }]} />
+  <article class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <header class="mb-12">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary text-caption font-medium px-4 py-2 rounded-pill mb-4">Knowledge Base</div>
+      <h1 class="text-hero text-ink mb-4">Concrete Curing: Complete Guide</h1>
+      <p class="text-lead text-ink-muted-80 max-w-2xl">Proper curing is essential for achieving the full strength and durability of concrete. Learn the best methods and practices.</p>
+    </header>
+    <div class="max-w-3xl">
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Why Curing is Important</h2>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">Curing maintains the moisture and temperature conditions in freshly placed concrete to allow proper hydration of cement. Without adequate curing, concrete can lose up to 50% of its potential strength.</p>
+        <div class="grid grid-cols-2 gap-4">
+          {[
+            { title: "Strength Development", desc: "Proper curing ensures 100% strength at 28 days" },
+            { title: "Durability", desc: "Reduces permeability and increases lifespan" },
+            { title: "Crack Prevention", desc: "Minimizes plastic and drying shrinkage cracks" },
+            { title: "Surface Quality", desc: "Better surface hardness and wear resistance" },
+          ].map((b) => (
+            <div class="card-container text-center">
+              <h3 class="text-caption-strong text-ink mb-1">{b.title}</h3>
+              <p class="text-caption text-ink-muted-80">{b.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Curing Methods</h2>
+        <div class="space-y-4">
+          {[
+            { title: "Water Curing", desc: "Ponding or continuous wetting. Most effective method. Keep surface continuously wet for 7-14 days. Ideal for slabs and flatwork." },
+            { title: "Wet Covering", desc: "Cover with wet burlap, canvas, or straw. Keep covers continuously damp. Good for vertical surfaces and columns." },
+            { title: "Plastic Sheeting", desc: "Cover with polyethylene sheets. Seals in moisture. Effective but can cause discoloration. Ensure sheets are securely weighted." },
+            { title: "Curing Compounds", desc: "Liquid membrane-forming compounds sprayed on surface. Forms waterproof barrier. Useful for large areas and vertical surfaces." },
+            { title: "Steam Curing", desc: "Accelerated curing using steam at atmospheric pressure. Used in precast concrete plants for rapid strength gain." },
+          ].map((method) => (
+            <div class="card-container">
+              <h3 class="text-body-strong text-ink mb-2">{method.title}</h3>
+              <p class="text-body text-ink-muted-80">{method.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </article>
+  <CTASection title="Calculate Your Concrete Needs" description="Use our Concrete Calculator for accurate volume and material estimates." ctaText="Try Concrete Calculator" ctaHref="/concrete-calculator" />
+  <FAQSection items={[
+    { question: "When should curing start?", answer: "Curing should begin as soon as the concrete has hardened enough to prevent surface damage, typically 2-4 hours after placement." },
+    { question: "What happens if concrete isn't cured?", answer: "Uncured concrete loses significant strength, develops surface cracks, has higher permeability, and reduced durability against environmental exposure." },
+    { question: "Is curing necessary in rainy weather?", answer: "Yes, even in rainy weather. Rain can wash away cement paste from the surface. Protect fresh concrete from rain while maintaining moisture for proper curing." },
+  ]} />
+</BaseLayout>

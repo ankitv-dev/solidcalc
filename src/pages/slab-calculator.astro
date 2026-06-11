@@ -1,0 +1,121 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CalculatorBase from "../components/CalculatorBase.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+import { META_DESCRIPTIONS } from "../lib/seo/keywords";
+---
+
+<BaseLayout
+  title="Slab Calculator - Concrete Volume & Material Estimator"
+  description={META_DESCRIPTIONS.slab}
+  canonical="https://solidcalc.vercel.app/slab-calculator"
+  structuredData={[
+    softwareAppSchema("Slab Calculator", META_DESCRIPTIONS.slab, "https://solidcalc.vercel.app/slab-calculator"),
+    faqSchema([
+      { question: "How do I calculate concrete for a slab?", answer: "Multiply slab length × width × thickness. Add 5-10% wastage. Our calculator also estimates cement, sand, and aggregate quantities." },
+      { question: "What is the standard slab thickness?", answer: "Residential slabs are typically 4-6 inches (100-150 mm). Commercial slabs may be 6-8 inches (150-200 mm) or more depending on loads." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Slab Calculator", url: "/slab-calculator" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Slab Calculator</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate concrete volume, cement, sand, and aggregate quantities for slabs. Perfect for driveways, patios, foundations, and floor slabs.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container">
+          <CalculatorBase
+            calculatorId="slab-calc"
+            inputs={[
+              {
+                id: "dimensions",
+                label: "Slab Dimensions",
+                fields: [
+                  { id: "length", label: "Length", placeholder: "e.g. 20", defaultValue: "20" },
+                  { id: "width", label: "Width", placeholder: "e.g. 10", defaultValue: "10" },
+                  { id: "thickness", label: "Thickness", placeholder: "e.g. 6", defaultValue: "6", step: "0.125" },
+                ],
+              },
+            ]}
+            outputs={[
+              {
+                id: "volume-results",
+                label: "Concrete Volume",
+                fields: [
+                  { id: "volumeM3", label: "Volume (m³)", unit: "m³" },
+                  { id: "volumeFt3", label: "Volume (ft³)", unit: "ft³" },
+                  { id: "volumeYd3", label: "Volume (yd³)", unit: "yd³" },
+                ],
+              },
+              {
+                id: "material-results",
+                label: "Material Quantities (1:1.5:3 Mix)",
+                fields: [
+                  { id: "cementKg", label: "Cement", unit: "kg" },
+                  { id: "sandKg", label: "Sand", unit: "kg" },
+                  { id: "aggregateKg", label: "Aggregate", unit: "kg" },
+                  { id: "waterLiters", label: "Water", unit: "L" },
+                  { id: "cementBags", label: "Cement Bags Required", highlight: true },
+                ],
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Unit Selection</h3>
+          <div class="flex flex-wrap gap-2">
+            {["ft", "in", "m", "cm", "mm", "yd"].map((u) => (
+              <label class="flex items-center gap-2 px-3 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                <input type="radio" name="unit" value={u} checked={u === "ft"} class="sr-only" />
+                {u}
+              </label>
+            ))}
+          </div>
+          <div class="border-t border-divider-soft pt-4">
+            <h4 class="text-caption-strong text-ink-muted-80 mb-2">Standard Mix: 1:1.5:3 (M20)</h4>
+            <p class="text-caption text-ink-muted-80">Used for general reinforced concrete construction including slabs, beams, and columns.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Volume = Length × Width × Thickness"
+    steps={[
+      "Measure the length, width, and thickness of the slab in the same unit.",
+      "Calculate the volume by multiplying all three dimensions.",
+      "Add wastage allowance (5-10%) for construction losses.",
+      "Our calculator uses the standard 1:1.5:3 (M20) mix ratio to estimate materials.",
+      "Cement quantity is calculated based on the dry volume method (multiply wet volume by 1.54).",
+    ]}
+    example={`Example: Concrete Slab\n\nDimensions: 20 ft × 10 ft × 6 inches\nVolume = 20 × 10 × 0.5 = 100 ft³ = 2.83 m³\n\nWith 5% wastage: 2.97 m³\n\nMaterials for M20 (1:1.5:3):\nCement: 7.67 tons → 154 bags (50 kg)\nSand: 11.5 tons\nAggregate: 23 tons\nWater: ~383 liters`}
+    relatedCalculators={[
+      { href: "/concrete-calculator", label: "Concrete Calculator" },
+      { href: "/footing-calculator", label: "Footing Calculator" },
+      { href: "/mix-design-calculator", label: "Mix Design Calculator" },
+      { href: "/material-calculator", label: "Material Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "What is the best concrete mix for a slab?", answer: "For most residential slabs, M20 (1:1.5:3) mix is recommended. For driveways and heavy-load areas, use M25 (1:1:2) or higher." },
+    { question: "How thick should a concrete slab be?", answer: "Patios and walkways: 4 inches. Driveways: 5-6 inches. Garage floors: 5-6 inches. Commercial: 6-8 inches or as per structural design." },
+    { question: "Do I need reinforcement in my slab?", answer: "Reinforcement is recommended for most slabs to control cracking. Use welded wire mesh or rebar depending on load requirements." },
+  ]} />
+<script>
+  import "../lib/client-calculator";
+</script>
+
+</BaseLayout>

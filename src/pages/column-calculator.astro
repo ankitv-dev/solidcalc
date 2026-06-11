@@ -1,0 +1,120 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CalculatorBase from "../components/CalculatorBase.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+import { META_DESCRIPTIONS } from "../lib/seo/keywords";
+---
+
+<BaseLayout
+  title="Column Calculator - Square & Circular Concrete Columns"
+  description={META_DESCRIPTIONS.column}
+  canonical="https://solidcalc.vercel.app/column-calculator"
+  structuredData={[
+    softwareAppSchema("Column Calculator", META_DESCRIPTIONS.column, "https://solidcalc.vercel.app/column-calculator"),
+    faqSchema([
+      { question: "How do I calculate concrete for a column?", answer: "For square columns: side × side × height. For circular: π × radius² × height. Multiply by the number of columns." },
+      { question: "What size are standard concrete columns?", answer: "Residential columns: 12×12 inches to 18×18 inches. Commercial columns: 24×24 inches or larger, depending on load." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Column Calculator", url: "/column-calculator" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Column Calculator</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate concrete volume and materials for square and circular columns. Supports multiple identical columns for batch estimation.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container">
+          <div class="mb-6">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide mb-3">Column Type</h3>
+            <div class="flex flex-wrap gap-2">
+              {["square", "circular"].map((t) => (
+                <label class="flex items-center gap-2 px-4 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                  <input type="radio" name="column-type" value={t} checked={t === "square"} class="sr-only" />
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <CalculatorBase
+            calculatorId="column-calc"
+            inputs={[
+              {
+                id: "dimensions",
+                label: "Column Dimensions",
+                fields: [
+                  { id: "side", label: "Side (Square)", placeholder: "e.g. 12", defaultValue: "12" },
+                  { id: "diameter", label: "Diameter (Circular)", placeholder: "e.g. 12", defaultValue: "12" },
+                  { id: "height", label: "Height", placeholder: "e.g. 10", defaultValue: "10" },
+                  { id: "count", label: "Number of Columns", placeholder: "e.g. 4", defaultValue: "4" },
+                ],
+              },
+            ]}
+            outputs={[
+              {
+                id: "volume-results",
+                label: "Results",
+                fields: [
+                  { id: "volumeM3", label: "Total Volume", unit: "m³" },
+                  { id: "cementKg", label: "Cement", unit: "kg" },
+                  { id: "sandKg", label: "Sand", unit: "kg" },
+                  { id: "aggregateKg", label: "Aggregate", unit: "kg" },
+                  { id: "cementBags", label: "Cement Bags Required", highlight: true },
+                ],
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Unit Selection</h3>
+          <div class="flex flex-wrap gap-2">
+            {["ft", "in", "m", "cm", "mm"].map((u) => (
+              <label class="flex items-center gap-2 px-3 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                <input type="radio" name="unit" value={u} checked={u === "ft"} class="sr-only" />
+                {u}
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Volume = Side² × Height (Square) | Volume = π × r² × Height (Circular)"
+    steps={[
+      "Select square or circular column type.",
+      "Enter column dimensions and height. For square columns, provide the side length. For circular, provide the diameter.",
+      "Enter the number of identical columns needed.",
+      "Add wastage allowance.",
+      "The calculator computes total volume and material requirements for all columns.",
+    ]}
+    example={`Example: 4 Square Columns\n\nColumn Size: 12" × 12", Height: 10 ft\nVolume per column = 1 × 1 × 10 = 10 ft³\nTotal = 4 × 10 = 40 ft³ = 1.13 m³\n\nWith 5% wastage: 1.19 m³\n\nMaterials per column:\nCement: ~3 bags (50 kg)\nSand: ~0.3 tons\nAggregate: ~0.6 tons`}
+    relatedCalculators={[
+      { href: "/concrete-calculator", label: "Concrete Calculator" },
+      { href: "/footing-calculator", label: "Footing Calculator" },
+      { href: "/mix-design-calculator", label: "Mix Design Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "What's the minimum column size for residential construction?", answer: "Minimum column size is typically 9×9 inches (230×230 mm) for residential buildings. Always follow local building codes." },
+    { question: "How many columns do I need?", answer: "Column spacing depends on the structural design. Typically columns are spaced 10-15 feet apart. Consult a structural engineer for your specific project." },
+    { question: "What concrete mix is best for columns?", answer: "M25 (1:1:2) or M30 (1:0.75:1.5) mix is recommended for reinforced concrete columns to achieve adequate compressive strength." },
+  ]} />
+<script>
+  import "../lib/client-calculator";
+</script>
+
+</BaseLayout>

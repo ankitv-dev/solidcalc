@@ -1,0 +1,90 @@
+---
+export interface InputGroup {
+  id: string;
+  label: string;
+  fields: { id: string; label: string; placeholder?: string; defaultValue?: string; step?: string; min?: string }[];
+}
+
+export interface OutputGroup {
+  id: string;
+  label: string;
+  fields: { id: string; label: string; unit?: string; highlight?: boolean }[];
+}
+
+export interface Props {
+  calculatorId: string;
+  inputs: InputGroup[];
+  outputs: OutputGroup[];
+  wastageOptions?: boolean;
+}
+
+const { calculatorId, inputs, outputs, wastageOptions = true } = Astro.props;
+---
+
+<div id={calculatorId} class="space-y-6" data-calculator={calculatorId}>
+  {inputs.map((group) => (
+    <div id={group.id} class="space-y-4">
+      {group.label && <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">{group.label}</h3>}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {group.fields.map((field) => (
+          <div class="flex flex-col gap-1.5">
+            <label for={field.id} class="text-caption text-ink-muted-80">{field.label}</label>
+            <input
+              type="number"
+              id={field.id}
+              placeholder={field.placeholder}
+              value={field.defaultValue}
+              step={field.step || "any"}
+              min={field.min || "0"}
+              class="input-field"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+
+  {wastageOptions && (
+    <div id="wastage-group" class="space-y-3">
+      <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Wastage Allowance</h3>
+      <div class="flex flex-wrap gap-2">
+        {["0", "5", "10", "15"].map((val) => (
+          <label class="flex items-center gap-2 px-4 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+            <input type="radio" name="wastage" value={val} checked={val === "5"} class="sr-only" />
+            {val}%
+          </label>
+        ))}
+        <label class="flex items-center gap-2 px-4 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+          <input type="radio" name="wastage" value="custom" class="sr-only" />
+          <input type="number" id="wastage-custom" placeholder="%" min="0" max="50" class="w-12 bg-transparent border-none text-caption text-ink-muted-80 focus:outline-none" />
+        </label>
+      </div>
+    </div>
+  )}
+
+  <button type="button" class="btn-primary w-full justify-center" data-calc-btn>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    Calculate
+  </button>
+
+  <div id="results-container" class="hidden space-y-6 pt-4 border-t border-divider-soft">
+    {outputs.map((group) => (
+      <div id={group.id} class="space-y-2">
+        {group.label && <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">{group.label}</h3>}
+        <div class="divide-y divide-divider-soft">
+          {group.fields.map((field) => (
+            <div class:list={["flex items-center justify-between py-3 px-3 rounded-lg", field.highlight ? "bg-primary/5" : ""]}>
+              <span class="text-caption text-ink-muted-80">{field.label}</span>
+              <span id={field.id} class="font-display text-lg font-semibold text-ink">
+                <span class="text-ink-muted-80 text-sm font-normal">-</span>
+                {field.unit && <span class="text-sm font-normal text-ink-muted-80 ml-1">{field.unit}</span>}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

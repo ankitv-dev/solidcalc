@@ -1,0 +1,90 @@
+---
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/concrete-calculator", label: "Concrete" },
+  { href: "/slab-calculator", label: "Slab" },
+  { href: "/mix-design-calculator", label: "Mix Design" },
+  { href: "/unit-converter", label: "Converter" },
+];
+
+const mobileLinks = [
+  { href: "/", label: "Home" },
+  { href: "/concrete-calculator", label: "Concrete Calculator" },
+  { href: "/slab-calculator", label: "Slab Calculator" },
+  { href: "/footing-calculator", label: "Footing Calculator" },
+  { href: "/column-calculator", label: "Column Calculator" },
+  { href: "/wall-calculator", label: "Wall Calculator" },
+  { href: "/stairs-calculator", label: "Stairs Calculator" },
+  { href: "/cement-calculator", label: "Cement Calculator" },
+  { href: "/material-calculator", label: "Material Calculator" },
+  { href: "/mix-design-calculator", label: "Mix Design Calculator" },
+  { href: "/unit-converter", label: "Unit Converter" },
+  { href: "/guides/concrete-mix-ratios", label: "Guides" },
+  { href: "/about", label: "About Us" },
+  { href: "/contact", label: "Contact Us" },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-black">
+  <div class="mx-auto flex h-11 max-w-wide items-center justify-between px-5">
+    <a href="/" class="flex items-center gap-2 text-white no-underline">
+      <img src="/favicon.svg" alt="SolidCalc" class="h-6 w-auto" />
+      <span class="font-body text-xs font-semibold tracking-[-0.12px]">SolidCalc</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-6">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="font-body text-xs font-normal tracking-[-0.12px] text-white/80 no-underline transition-colors hover:text-white"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <button id="mobile-menu-btn" class="flex md:hidden items-center justify-center w-11 h-11 text-white/80 hover:text-white" aria-label="Open menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<nav id="mobile-menu" class="fixed inset-0 z-40 hidden bg-surface-black/98 pt-11">
+  <div class="flex flex-col px-5 py-6 gap-4">
+    {
+      mobileLinks.map((link) => (
+        <a
+          href={link.href}
+          class="font-body text-lg font-normal text-white/80 no-underline transition-colors hover:text-white"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
+</nav>
+
+<script>
+  const menuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener("click", () => {
+      const isOpen = mobileMenu.classList.toggle("hidden");
+      menuBtn.setAttribute("aria-label", isOpen ? "Open menu" : "Close menu");
+    });
+
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.add("hidden");
+        menuBtn.setAttribute("aria-label", "Open menu");
+      });
+    });
+  }
+</script>

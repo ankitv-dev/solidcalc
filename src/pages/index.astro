@@ -1,0 +1,155 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CalculatorCard from "../components/CalculatorCard.astro";
+import FAQSection from "../components/FAQSection.astro";
+import CTASection from "../components/CTASection.astro";
+import { Icon } from "astro-icon/components";
+import { websiteSchema } from "../lib/seo/structured-data";
+
+const calculators = [
+  { href: "/concrete-calculator", label: "Concrete Calculator", description: "Calculate concrete volume, weight, and bag requirements", icon: "calculator" },
+  { href: "/slab-calculator", label: "Slab Calculator", description: "Estimate concrete and material quantities for slabs", icon: "slab" },
+  { href: "/footing-calculator", label: "Footing Calculator", description: "Calculate footing concrete volume and materials", icon: "footing" },
+  { href: "/column-calculator", label: "Column Calculator", description: "Estimate concrete for square and circular columns", icon: "column" },
+  { href: "/wall-calculator", label: "Wall Calculator", description: "Calculate wall concrete volume and materials", icon: "wall" },
+  { href: "/stairs-calculator", label: "Stairs Calculator", description: "Estimate concrete volume for staircases", icon: "stairs" },
+  { href: "/cement-calculator", label: "Cement Calculator", description: "Calculate cement bags needed for your project", icon: "cement" },
+  { href: "/material-calculator", label: "Material Calculator", description: "Estimate cement, sand, and aggregate quantities", icon: "material" },
+  { href: "/mix-design-calculator", label: "Mix Design Calculator", description: "Design concrete mix proportions for any grade", icon: "mix" },
+  { href: "/unit-converter", label: "Unit Converter", description: "Convert between metric and imperial units", icon: "converter" },
+];
+
+const benefits = [
+  { title: "Accurate Results", description: "Industry-standard formulas ensure precise calculations every time." },
+  { title: "Multiple Units", description: "Support for metric and imperial units with automatic conversion." },
+  { title: "Save Time", description: "Get instant material estimates without manual calculations." },
+  { title: "Wastage Included", description: "Built-in wastage allowance for realistic material ordering." },
+  { title: "Mobile Friendly", description: "Works perfectly on any device, on-site or in the office." },
+  { title: "Free to Use", description: "All calculators are completely free with no hidden charges." },
+];
+
+const faqs = [
+  { question: "How does the concrete calculator work?", answer: "Enter the length, width, and depth of your concrete element. The calculator automatically computes volume in cubic meters, cubic feet, and cubic yards, then estimates the weight and number of concrete bags needed based on standard concrete density." },
+  { question: "What is the standard concrete density?", answer: "Standard concrete density is approximately 2400 kg/m³ (150 lb/ft³). This value is used for weight calculations across all our calculators." },
+  { question: "How do I account for wastage?", answer: "Our calculators include a wastage allowance option (5%, 10%, 15%, or custom). This adds extra material to account for spillage, over-excavation, and construction losses." },
+  { question: "What mix ratio should I use?", answer: "Common mix ratios include 1:1.5:3 (M20) for general construction, 1:2:4 (M15) for foundations, and 1:1:2 (M25) for reinforced concrete. Use our Mix Design Calculator for detailed proportions." },
+  { question: "Can I switch between metric and imperial units?", answer: "Yes! All calculators support both metric (mm, cm, m) and imperial (inches, feet, yards) units. You can even mix units within a single calculation." },
+];
+---
+
+<BaseLayout
+  title="SolidCalc - Free Concrete & Construction Material Calculator"
+  description="Free online concrete calculator and construction material calculator. Accurately calculate concrete volume, slab materials, footing, column, wall, and stairs requirements. Trusted by contractors and builders."
+  structuredData={[websiteSchema()]}
+>
+  <!-- Hero -->
+  <section class="min-h-[85vh] flex items-center justify-center bg-canvas pt-11">
+    <div class="mx-auto max-w-content px-6 md:px-10 text-center py-20">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary text-caption font-medium px-4 py-2 rounded-pill mb-6 animate-fade-in-up">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+        Professional Concrete Calculators
+      </div>
+      <h1 class="text-hero text-ink mb-5 max-w-3xl mx-auto animate-fade-in-up animate-fade-in-up-1">
+        Accurate Concrete Calculations,<br />Simplified
+      </h1>
+      <p class="text-lead text-ink-muted-80 max-w-xl mx-auto mb-10 animate-fade-in-up animate-fade-in-up-2">
+        Free online concrete calculators for contractors, engineers, architects, and builders. Get precise volume, material, and cost estimates in seconds.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4 animate-fade-in-up animate-fade-in-up-3">
+        <a href="/concrete-calculator" class="btn-primary text-lg px-8 py-4">Try Concrete Calculator</a>
+        <a href="#calculators" class="btn-secondary text-lg px-8 py-4">View All Calculators</a>
+      </div>
+      <div class="mt-16 flex flex-wrap items-center justify-center gap-8 text-caption text-ink-muted-80 animate-fade-in-up animate-fade-in-up-4">
+        <span class="flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          100% Free
+        </span>
+        <span class="flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          No Sign-up Required
+        </span>
+        <span class="flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Accurate Results
+        </span>
+        <span class="flex items-center gap-1.5">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Instantly Calculated
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calculator Showcase -->
+  <section id="calculators" class="bg-canvas-parchment py-section">
+    <div class="mx-auto max-w-wide px-6 md:px-10">
+      <div class="text-center mb-12">
+        <h2 class="text-display-lg text-ink mb-3">All Calculators</h2>
+        <p class="text-lg text-ink-muted-80">Complete suite of concrete and construction calculators</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {calculators.map((calc) => (
+          <CalculatorCard {...calc} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="py-section bg-canvas">
+    <div class="mx-auto max-w-content px-6 md:px-10 text-center">
+      <h2 class="text-display-lg text-ink mb-3">Why Choose SolidCalc?</h2>
+      <p class="text-lg text-ink-muted-80 mb-12 max-w-xl mx-auto">Built by construction professionals for precision and ease of use</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {benefits.map((b) => (
+          <div class="card-container text-left">
+            <h3 class="font-display text-lg font-semibold text-ink mb-2">{b.title}</h3>
+            <p class="text-body text-ink-muted-80">{b.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="bg-surface-tile-1 py-section">
+    <div class="mx-auto max-w-wide px-6 md:px-10 text-center">
+      <h2 class="text-display-lg text-body-on-dark mb-3">Who Is It For?</h2>
+      <p class="text-lg text-body-on-dark mb-12 max-w-xl mx-auto opacity-80">Trusted by construction professionals worldwide</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {[
+          { role: "Contractors", icon: "lucide:hard-hat", desc: "Estimate material costs and concrete volumes for bids and project planning." },
+          { role: "Engineers", icon: "lucide:cog", desc: "Verify structural concrete requirements and mix design specifications." },
+          { role: "Architects", icon: "lucide:pencil-ruler", desc: "Calculate precise material quantities for construction documentation." },
+          { role: "Builders", icon: "lucide:hammer", desc: "Order accurate concrete and material quantities to reduce waste." },
+          { role: "Homeowners", icon: "lucide:home", desc: "Plan DIY concrete projects with confidence and accurate budgets." },
+        ].map(({ role, icon, desc }) => (
+          <div class="glass-card text-left">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                <Icon name={icon} class="w-5 h-5 text-primary" />
+              </div>
+              <h3 class="text-body-strong">{role}</h3>
+            </div>
+            <p class="text-caption text-ink-muted-80 leading-relaxed">{desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <FAQSection items={faqs} />
+
+  <!-- CTA -->
+  <CTASection
+    title="Ready to Calculate?"
+    description="Start using our professional concrete calculators for free. No registration required."
+    ctaText="Get Started Now"
+    ctaHref="/concrete-calculator"
+  />
+</BaseLayout>

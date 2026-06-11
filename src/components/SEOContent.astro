@@ -1,0 +1,77 @@
+---
+export interface Props {
+  formula?: string;
+  steps?: string[];
+  example?: string;
+  commonMistakes?: string[];
+  relatedCalculators?: { href: string; label: string }[];
+}
+
+const { formula, steps, example, commonMistakes, relatedCalculators } = Astro.props;
+---
+
+<div class="mx-auto w-full max-w-content px-6 md:px-10 pb-section">
+  <div class="max-w-3xl mx-auto space-y-10">
+    {formula && (
+      <section>
+        <h2 class="text-display-md text-ink mb-4">Formula</h2>
+        <div class="card-container">
+          <code class="font-mono text-lg text-primary">{formula}</code>
+        </div>
+      </section>
+    )}
+
+    {steps && steps.length > 0 && (
+      <section>
+        <h2 class="text-display-md text-ink mb-4">Step-by-Step Instructions</h2>
+        <ol class="space-y-3 list-none p-0">
+          {steps.map((step) => (
+            <li class="card-container flex gap-4">
+              <span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-semibold shrink-0" />
+              <p class="text-body text-ink-muted-80">{step}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {example && (
+      <section>
+        <h2 class="text-display-md text-ink mb-4">Worked Example</h2>
+        <div class="card-container bg-canvas-parchment">
+          <p class="text-body text-ink-muted-80 leading-relaxed whitespace-pre-line">{example}</p>
+        </div>
+      </section>
+    )}
+
+    {commonMistakes && commonMistakes.length > 0 && (
+      <section>
+        <h2 class="text-display-md text-ink mb-4">Common Mistakes</h2>
+        <ul class="space-y-2">
+          {commonMistakes.map((m) => (
+            <li class="flex gap-3 text-body text-ink-muted-80">
+              <span class="text-accent shrink-0 mt-1">&#x26A0;</span>
+              <span>{m}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {relatedCalculators && relatedCalculators.length > 0 && (
+      <section>
+        <h2 class="text-display-md text-ink mb-4">Related Calculators</h2>
+        <div class="flex flex-wrap gap-3">
+          {relatedCalculators.map((calc) => (
+            <a
+              href={calc.href}
+              class="btn-secondary text-sm px-4 py-2"
+            >
+              {calc.label}
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</div>

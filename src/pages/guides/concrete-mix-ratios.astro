@@ -1,0 +1,168 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import FAQSection from "../../components/FAQSection.astro";
+import CTASection from "../../components/CTASection.astro";
+import { articleSchema, faqSchema } from "../../lib/seo/structured-data";
+---
+
+<BaseLayout
+  title="Concrete Mix Ratios Guide - M10, M15, M20, M25, M30 Explained"
+  description="Complete guide to concrete mix ratios. Learn about M10, M15, M20, M25, and M30 concrete grades, their proportions, uses, and strength characteristics."
+  canonical="https://solidcalc.vercel.app/guides/concrete-mix-ratios"
+  structuredData={[
+    articleSchema(
+      "Concrete Mix Ratios: Complete Guide to M10, M15, M20, M25, M30",
+      "Learn everything about concrete mix ratios, grades, and proportions.",
+      "https://solidcalc.vercel.app/guides/concrete-mix-ratios",
+      "2024-01-01"
+    ),
+    faqSchema([
+      { question: "What is the strongest concrete mix ratio?", answer: "M30 (1:0.75:1.5) is the strongest standard grade with 30 MPa compressive strength. Higher strengths require specialized mix designs." },
+      { question: "Can I use M20 for foundations?", answer: "Yes, M20 is suitable for reinforced concrete foundations. For plain concrete foundations, M15 may be adequate." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Guides", url: "/guides/concrete-mix-ratios" },
+    { name: "Concrete Mix Ratios", url: "/guides/concrete-mix-ratios" },
+  ]} />
+
+  <article class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <header class="mb-12">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary text-caption font-medium px-4 py-2 rounded-pill mb-4">
+        Knowledge Base
+      </div>
+      <h1 class="text-hero text-ink mb-4">Concrete Mix Ratios: The Complete Guide</h1>
+      <p class="text-lead text-ink-muted-80 max-w-2xl">Understanding concrete mix ratios is essential for any construction project. This guide explains the different grades of concrete, their proportions, and when to use each one.</p>
+    </header>
+
+    <div class="max-w-3xl">
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">What is a Concrete Mix Ratio?</h2>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">
+          A concrete mix ratio specifies the proportions of cement, sand, and aggregate in a concrete mix. The ratio is expressed as Cement : Sand : Aggregate by volume. For example, a 1:1.5:3 mix ratio means 1 part cement, 1.5 parts sand, and 3 parts aggregate by volume.
+        </p>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">
+          The water-cement ratio is equally important — it determines the workability and ultimate strength of the concrete. A lower water-cement ratio produces stronger concrete but is harder to work with.
+        </p>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Standard Concrete Grades</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left card-container">
+            <thead>
+              <tr class="border-b border-divider-soft">
+                <th class="py-3 px-4 text-caption-strong text-ink">Grade</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Mix Ratio</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Strength (MPa)</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Common Uses</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-divider-soft">
+              {[
+                ["M10", "1:3:6", "10 MPa", "Blinding, non-structural fill, pathways"],
+                ["M15", "1:2:4", "15 MPa", "Foundations, mass concrete, paving"],
+                ["M20", "1:1.5:3", "20 MPa", "Slabs, beams, columns, general construction"],
+                ["M25", "1:1:2", "25 MPa", "Reinforced concrete, heavy structures"],
+                ["M30", "1:0.75:1.5", "30 MPa", "High-strength, industrial, bridges"],
+              ].map((row) => (
+                <tr class="hover:bg-canvas-parchment transition-colors">
+                  {row.map((cell) => (
+                    <td class="py-3 px-4 text-body text-ink-muted-80">{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">How to Choose the Right Mix</h2>
+        <div class="space-y-4">
+          {[
+            { title: "Structural Requirements", desc: "Consider the load-bearing requirements. Higher loads need higher-grade concrete (M25+)." },
+            { title: "Exposure Conditions", desc: "For exposed environments, use higher-grade concrete with lower water-cement ratio for better durability." },
+            { title: "Workability Needs", desc: "Complex formwork or dense reinforcement requires more workable concrete. Adjust the water content or use plasticizers." },
+            { title: "Cost Considerations", desc: "Higher-grade concrete uses more cement and costs more. Use the minimum grade that meets structural requirements." },
+          ].map((tip) => (
+            <div class="card-container">
+              <h3 class="text-body-strong text-ink mb-2">{tip.title}</h3>
+              <p class="text-body text-ink-muted-80">{tip.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Water-Cement Ratio Guide</h2>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">
+          The water-cement (w/c) ratio is the weight of water divided by the weight of cement. It directly affects concrete strength and durability.
+        </p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left card-container">
+            <thead>
+              <tr class="border-b border-divider-soft">
+                <th class="py-3 px-4 text-caption-strong text-ink">Grade</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">W/C Ratio</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Workability</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-divider-soft">
+              {[
+                ["M10", "0.60", "High — easy to work with"],
+                ["M15", "0.55", "Moderate-high"],
+                ["M20", "0.50", "Moderate"],
+                ["M25", "0.45", "Moderate-low"],
+                ["M30", "0.40", "Low — may need plasticizer"],
+              ].map((row) => (
+                <tr class="hover:bg-canvas-parchment transition-colors">
+                  {row.map((cell) => (
+                    <td class="py-3 px-4 text-body text-ink-muted-80">{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Calculating Material Quantities</h2>
+        <p class="text-body text-ink-muted-80 mb-4 leading-relaxed">
+          To calculate the materials needed for a concrete mix, use the dry volume method:
+        </p>
+        <ol class="space-y-3">
+          {[
+            "Determine the wet volume of concrete needed.",
+            "Multiply by 1.54 to get the dry volume (accounts for voids and bulking).",
+            "Divide the dry volume by the total number of parts in the mix ratio.",
+            "Multiply each component's parts by their respective densities (cement: 1440, sand: 1600, aggregate: 1500 kg/m³).",
+          ].map((step, i) => (
+            <li class="card-container flex gap-4 items-start">
+              <span class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-semibold shrink-0 mt-0.5">{i + 1}</span>
+              <p class="text-body text-ink-muted-80">{step}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+  </article>
+
+  <CTASection
+    title="Need to Calculate Materials?"
+    description="Use our free Mix Design Calculator to get precise material quantities for any concrete grade."
+    ctaText="Try Mix Design Calculator"
+    ctaHref="/mix-design-calculator"
+  />
+
+  <FAQSection items={[
+    { question: "What happens if I use too much water in concrete?", answer: "Excess water reduces concrete strength, increases shrinkage and cracking, and decreases durability. Always use the recommended water-cement ratio." },
+    { question: "Can I mix different grades of cement?", answer: "No, always use one type and grade of cement for a single concrete mix. Different cements have different properties and setting times." },
+    { question: "How long does concrete take to reach full strength?", answer: "Concrete reaches about 70% of its strength in 7 days and 100% in 28 days under proper curing conditions." },
+    { question: "What is the difference between nominal mix and design mix?", answer: "Nominal mix uses fixed ratios (like 1:1.5:3). Design mix is scientifically calculated based on material properties for specific strength requirements." },
+  ]} />
+</BaseLayout>

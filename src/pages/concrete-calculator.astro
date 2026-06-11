@@ -1,0 +1,129 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CalculatorBase from "../components/CalculatorBase.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+import { META_DESCRIPTIONS } from "../lib/seo/keywords";
+---
+
+<BaseLayout
+  title="Concrete Calculator - Calculate Volume, Bags & Weight"
+  description={META_DESCRIPTIONS.concrete}
+  canonical="https://solidcalc.vercel.app/concrete-calculator"
+  structuredData={[
+    softwareAppSchema(
+      "Concrete Calculator",
+      "Free concrete volume calculator. Calculate cubic meters, cubic feet, cubic yards, bags required, and weight.",
+      "https://solidcalc.vercel.app/concrete-calculator"
+    ),
+    faqSchema([
+      { question: "How do I calculate concrete volume?", answer: "Multiply length × width × depth. Convert all measurements to the same unit first. Our calculator does this automatically." },
+      { question: "How much does concrete weigh?", answer: "Standard concrete weighs approximately 2400 kg/m³ (150 lb/ft³). The weight varies slightly based on the mix design and aggregates used." },
+      { question: "How many concrete bags do I need?", answer: "Divide the total concrete weight by the bag size. Standard bags are 50 kg (metric) or 60 lb (imperial). Always add 5-10% for wastage." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Concrete Calculator", url: "/concrete-calculator" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Concrete Calculator</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate the exact concrete volume, weight, and number of bags needed for your project. Enter length, width, and depth below.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container">
+          <CalculatorBase
+            calculatorId="concrete-calc"
+            inputs={[
+              {
+                id: "dimensions",
+                label: "Dimensions",
+                fields: [
+                  { id: "length", label: "Length", placeholder: "e.g. 20", defaultValue: "10" },
+                  { id: "width", label: "Width", placeholder: "e.g. 10", defaultValue: "10" },
+                  { id: "depth", label: "Depth", placeholder: "e.g. 6", defaultValue: "6", step: "0.125" },
+                ],
+              },
+            ]}
+            outputs={[
+              {
+                id: "volume-results",
+                label: "Volume",
+                fields: [
+                  { id: "volumeM3", label: "Volume (m³)", unit: "m³" },
+                  { id: "volumeFt3", label: "Volume (ft³)", unit: "ft³" },
+                  { id: "volumeYd3", label: "Volume (yd³)", unit: "yd³" },
+                ],
+              },
+              {
+                id: "weight-results",
+                label: "Weight & Bags",
+                fields: [
+                  { id: "weightKg", label: "Weight", unit: "kg" },
+                  { id: "bagsRequired", label: "Bags Required", highlight: true },
+                ],
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Unit Selection</h3>
+          <div class="flex flex-wrap gap-2">
+            {["ft", "in", "m", "cm", "mm", "yd"].map((u) => (
+              <label class="flex items-center gap-2 px-3 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                <input type="radio" name="unit" value={u} checked={u === "ft"} class="sr-only" />
+                {u}
+              </label>
+            ))}
+          </div>
+          <p class="text-caption text-ink-muted-80 leading-relaxed">
+            Enter your dimensions and select the unit. The calculator supports mixed units — all values are normalized automatically.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Volume = Length × Width × Depth"
+    steps={[
+      "Measure the length, width, and depth of the area to be filled with concrete.",
+      "Ensure all measurements are in the same unit (our calculator handles this automatically).",
+      "Multiply the three dimensions together to get the total volume.",
+      "Add a wastage allowance (typically 5-10%) to account for spillage and variations.",
+      "The calculator automatically converts volume to weight using standard concrete density of 2400 kg/m³.",
+      "Divide total weight by bag size to determine the number of concrete bags required.",
+    ]}
+    example={`Example Calculation:\n\nSlab Dimensions: 20 ft × 10 ft × 6 inches\n\nDepth in feet: 6" ÷ 12 = 0.5 ft\nVolume = 20 × 10 × 0.5 = 100 ft³\nVolume in m³ = 100 ÷ 35.315 = 2.83 m³\n\nWith 5% wastage: 2.83 × 1.05 = 2.97 m³\nWeight: 2.97 × 2400 = 7,133 kg\n\n50 kg bags needed: 7,133 ÷ 50 = 143 bags`}
+    commonMistakes={[
+      "Forgetting to convert all measurements to the same unit before calculating.",
+      "Not accounting for wastage — always add 5-10% extra for spillage and over-excavation.",
+      "Using the wrong concrete density for lightweight or heavy-weight concrete mixes.",
+    ]}
+    relatedCalculators={[
+      { href: "/slab-calculator", label: "Slab Calculator" },
+      { href: "/footing-calculator", label: "Footing Calculator" },
+      { href: "/column-calculator", label: "Column Calculator" },
+      { href: "/mix-design-calculator", label: "Mix Design Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "What units does the concrete calculator support?", answer: "Our calculator supports millimeters, centimeters, meters, inches, feet, and yards. You can mix units — for example, enter length in feet and depth in inches." },
+    { question: "How accurate is the concrete calculator?", answer: "The calculator uses industry-standard formulas and concrete density values. Results are accurate to within normal construction tolerances. Always consult a structural engineer for critical applications." },
+    { question: "What is the standard concrete density used?", answer: "We use 2400 kg/m³ (150 lb/ft³) for standard reinforced concrete. This is the typical density used in construction calculations worldwide." },
+    { question: "How do I account for reinforcement steel?", answer: "The calculator estimates concrete volume only. Reinforcement steel occupies minimal volume (typically 1-2% of the section) and is usually ignored for concrete volume calculations." },
+    { question: "Can I use this for large commercial projects?", answer: "Yes, the calculator works for any scale. However, for large commercial projects, we recommend getting a detailed mix design from a concrete supplier." },
+  ]} />
+  <script>
+    import "../lib/client-calculator";
+  </script>
+</BaseLayout>

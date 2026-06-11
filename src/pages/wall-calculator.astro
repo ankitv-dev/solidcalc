@@ -1,0 +1,108 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CalculatorBase from "../components/CalculatorBase.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+import { META_DESCRIPTIONS } from "../lib/seo/keywords";
+---
+
+<BaseLayout
+  title="Wall Calculator - Concrete Wall Volume & Materials"
+  description={META_DESCRIPTIONS.wall}
+  canonical="https://solidcalc.vercel.app/wall-calculator"
+  structuredData={[
+    softwareAppSchema("Wall Calculator", META_DESCRIPTIONS.wall, "https://solidcalc.vercel.app/wall-calculator"),
+    faqSchema([
+      { question: "How do I calculate concrete for a wall?", answer: "Multiply wall length × height × thickness. Add wastage allowance. The result gives you the concrete volume needed." },
+      { question: "What is the standard wall thickness?", answer: "Residential walls: 6-8 inches. Retaining walls: 10-12 inches. Basement walls: 8-10 inches. Commercial walls: 12 inches or more." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Wall Calculator", url: "/wall-calculator" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Wall Calculator</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate concrete volume and material quantities for walls. Suitable for retaining walls, foundation walls, boundary walls, and more.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container">
+          <CalculatorBase
+            calculatorId="wall-calc"
+            inputs={[
+              {
+                id: "dimensions",
+                label: "Wall Dimensions",
+                fields: [
+                  { id: "length", label: "Length", placeholder: "e.g. 50", defaultValue: "50" },
+                  { id: "height", label: "Height", placeholder: "e.g. 10", defaultValue: "10" },
+                  { id: "thickness", label: "Thickness", placeholder: "e.g. 8", defaultValue: "8" },
+                ],
+              },
+            ]}
+            outputs={[
+              {
+                id: "volume-results",
+                label: "Results",
+                fields: [
+                  { id: "volumeM3", label: "Concrete Volume", unit: "m³" },
+                  { id: "cementKg", label: "Cement", unit: "kg" },
+                  { id: "sandKg", label: "Sand", unit: "kg" },
+                  { id: "aggregateKg", label: "Aggregate", unit: "kg" },
+                  { id: "cementBags", label: "Cement Bags Required", highlight: true },
+                ],
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Unit Selection</h3>
+          <div class="flex flex-wrap gap-2">
+            {["ft", "in", "m", "cm", "mm"].map((u) => (
+              <label class="flex items-center gap-2 px-3 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                <input type="radio" name="unit" value={u} checked={u === "ft"} class="sr-only" />
+                {u}
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Volume = Length × Height × Thickness"
+    steps={[
+      "Measure the total length of the wall.",
+      "Measure the height from the base to the top of the wall.",
+      "Measure the wall thickness.",
+      "Enter dimensions and add wastage allowance.",
+      "The calculator provides total concrete volume and material estimates.",
+    ]}
+    example={`Example: Retaining Wall\n\nLength: 50 ft, Height: 10 ft, Thickness: 8 inches\nThickness in feet: 8" ÷ 12 = 0.67 ft\nVolume = 50 × 10 × 0.67 = 335 ft³ = 9.49 m³\n\nWith 5% wastage: 9.96 m³\n\nMaterials (M20 mix):\nCement: 5.14 tons → 103 bags (50 kg)\nSand: 7.71 tons\nAggregate: 15.42 tons`}
+    relatedCalculators={[
+      { href: "/concrete-calculator", label: "Concrete Calculator" },
+      { href: "/footing-calculator", label: "Footing Calculator" },
+      { href: "/material-calculator", label: "Material Calculator" },
+      { href: "/mix-design-calculator", label: "Mix Design Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "Do concrete walls need reinforcement?", answer: "Yes, most concrete walls require reinforcement. Retaining walls need horizontal and vertical rebar. Basement walls typically need rebar at 24-inch spacing." },
+    { question: "What is the difference between a retaining wall and a foundation wall?", answer: "Retaining walls resist lateral soil pressure and are designed to hold back earth. Foundation walls support vertical building loads and may also retain soil." },
+    { question: "What concrete mix is best for walls?", answer: "M20 (1:1.5:3) is suitable for general walls. For retaining walls and basement walls, M25 (1:1:2) is recommended for better strength and water resistance." },
+  ]} />
+<script>
+  import "../lib/client-calculator";
+</script>
+
+</BaseLayout>

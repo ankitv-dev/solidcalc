@@ -1,0 +1,131 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CalculatorBase from "../components/CalculatorBase.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+import { META_DESCRIPTIONS } from "../lib/seo/keywords";
+---
+
+<BaseLayout
+  title="Material Calculator - Cement, Sand & Aggregate Estimator"
+  description={META_DESCRIPTIONS.material}
+  canonical="https://solidcalc.vercel.app/material-calculator"
+  structuredData={[
+    softwareAppSchema("Material Calculator", META_DESCRIPTIONS.material, "https://solidcalc.vercel.app/material-calculator"),
+    faqSchema([
+      { question: "How do I calculate materials for concrete?", answer: "Use the dry volume method: multiply wet concrete volume by 1.54, then divide by the total mix ratio parts to find each material quantity." },
+      { question: "What are standard concrete mix ratios?", answer: "M10: 1:3:6, M15: 1:2:4, M20: 1:1.5:3, M25: 1:1:2, M30: 1:0.75:1.5. Each number represents cement:sand:aggregate by volume." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Material Calculator", url: "/material-calculator" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Material Calculator</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate cement, sand, and aggregate quantities for any concrete mix ratio. Perfect for ordering construction materials with confidence.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container">
+          <div class="mb-6">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide mb-3">Mix Ratio</h3>
+            <div class="flex flex-wrap gap-2">
+              {["1:1.5:3", "1:2:4", "1:3:6", "1:1:2", "1:0.75:1.5"].map((r) => (
+                <label class="flex items-center gap-2 px-4 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                  <input type="radio" name="material-ratio" value={r} checked={r === "1:1.5:3"} class="sr-only" />
+                  {r}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <CalculatorBase
+            calculatorId="material-calc"
+            wastageOptions={false}
+            inputs={[
+              {
+                id: "volume-input",
+                label: "Concrete Volume",
+                fields: [
+                  { id: "volumeM3", label: "Concrete Volume (m³)", placeholder: "e.g. 5", defaultValue: "5", step: "0.1" },
+                ],
+              },
+            ]}
+            outputs={[
+              {
+                id: "material-results",
+                label: "Material Quantities",
+                fields: [
+                  { id: "cementKg", label: "Cement", unit: "kg", highlight: true },
+                  { id: "sandKg", label: "Sand", unit: "kg" },
+                  { id: "aggregateKg", label: "Aggregate", unit: "kg" },
+                  { id: "cementBags", label: "Cement Bags (50 kg)", highlight: true },
+                ],
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Mix Guide</h3>
+          <div class="space-y-3">
+            <div class="p-3 rounded-lg bg-primary/5">
+              <p class="text-caption-strong text-ink">1:1.5:3 (M20)</p>
+              <p class="text-caption text-ink-muted-80">General construction, slabs, beams</p>
+            </div>
+            <div class="p-3 rounded-lg bg-canvas-parchment">
+              <p class="text-caption-strong text-ink">1:2:4 (M15)</p>
+              <p class="text-caption text-ink-muted-80">Foundations, mass concrete</p>
+            </div>
+            <div class="p-3 rounded-lg bg-canvas-parchment">
+              <p class="text-caption-strong text-ink">1:3:6 (M10)</p>
+              <p class="text-caption text-ink-muted-80">Blinding, non-structural</p>
+            </div>
+            <div class="p-3 rounded-lg bg-canvas-parchment">
+              <p class="text-caption-strong text-ink">1:1:2 (M25)</p>
+              <p class="text-caption text-ink-muted-80">Reinforced concrete, columns</p>
+            </div>
+            <div class="p-3 rounded-lg bg-canvas-parchment">
+              <p class="text-caption-strong text-ink">1:0.75:1.5 (M30)</p>
+              <p class="text-caption text-ink-muted-80">High-strength, industrial</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Material = (Ratio Part ÷ Total Parts) × Dry Volume × Density"
+    steps={[
+      "Determine the total concrete volume needed.",
+      "Select the appropriate mix ratio for your project.",
+      "Calculate dry volume: wet volume × 1.54 (accounts for bulking and voids).",
+      "Divide each ratio component by the total sum of ratios.",
+      "Multiply by the respective material density (cement: 1440, sand: 1600, aggregate: 1500 kg/m³).",
+    ]}
+    example={`Example: 5 m³ Concrete using M20 (1:1.5:3)\n\nTotal parts = 1 + 1.5 + 3 = 5.5\nDry volume = 5 × 1.54 = 7.7 m³\n\nCement = (1/5.5) × 7.7 × 1440 = 2,016 kg\nSand = (1.5/5.5) × 7.7 × 1600 = 3,360 kg\nAggregate = (3/5.5) × 7.7 × 1500 = 6,300 kg\n\nCement bags (50 kg): 2,016 ÷ 50 = 41 bags`}
+    relatedCalculators={[
+      { href: "/concrete-calculator", label: "Concrete Calculator" },
+      { href: "/cement-calculator", label: "Cement Calculator" },
+      { href: "/mix-design-calculator", label: "Mix Design Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "Why do we multiply by 1.54 for dry volume?", answer: "The dry volume factor of 1.54 accounts for bulking of sand, voids in aggregates, and the fact that wet concrete occupies less volume than the sum of dry materials." },
+    { question: "What is the density of common construction materials?", answer: "Cement: 1440 kg/m³, Sand: 1600 kg/m³, Coarse Aggregate: 1500 kg/m³. These are standard values used in construction calculations." },
+    { question: "Can I use this calculator for plastering?", answer: "No, this calculator is for concrete materials. Plaster requires different mix ratios (typically 1:3 to 1:6 cement-sand) and does not include aggregate." },
+  ]} />
+<script>
+  import "../lib/client-calculator";
+</script>
+
+</BaseLayout>

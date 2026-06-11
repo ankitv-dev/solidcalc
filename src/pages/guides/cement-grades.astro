@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import FAQSection from "../../components/FAQSection.astro";
+import CTASection from "../../components/CTASection.astro";
+import { articleSchema, faqSchema } from "../../lib/seo/structured-data";
+---
+
+<BaseLayout
+  title="Cement Grades Explained - OPC 33, 43, 53 & PPC Guide"
+  description="Complete guide to cement grades including OPC 33, 43, 53, and PPC. Learn about cement types, strength classes, and applications for construction."
+  canonical="https://solidcalc.vercel.app/guides/cement-grades"
+  structuredData={[
+    articleSchema("Cement Grades: OPC 33, 43, 53 & PPC Explained", "Complete cement grade guide.", "https://solidcalc.vercel.app/guides/cement-grades", "2024-01-01"),
+    faqSchema([
+      { question: "What is the best cement grade for house construction?", answer: "OPC 43 grade is most commonly used for residential construction. OPC 53 is used for high-strength requirements. PPC is preferred for mass concrete works." },
+      { question: "What is the difference between OPC and PPC cement?", answer: "OPC (Ordinary Portland Cement) has higher early strength. PPC (Portland Pozzolana Cement) has better durability, lower heat of hydration, and is more economical." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Cement Grades", url: "/guides/cement-grades" }]} />
+  <article class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <header class="mb-12">
+      <div class="inline-flex items-center gap-2 bg-primary/10 text-primary text-caption font-medium px-4 py-2 rounded-pill mb-4">Knowledge Base</div>
+      <h1 class="text-hero text-ink mb-4">Cement Grades: A Comprehensive Guide</h1>
+      <p class="text-lead text-ink-muted-80 max-w-2xl">Understanding cement grades is crucial for achieving the right concrete strength. This guide covers OPC, PPC, and other cement types used in construction.</p>
+    </header>
+    <div class="max-w-3xl">
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Types of Cement</h2>
+        <div class="space-y-4">
+          {[
+            { title: "OPC 33 Grade", desc: "Ordinary Portland Cement with minimum compressive strength of 33 MPa at 28 days. Used for masonry, plastering, and non-structural work. Low cost but lower strength." },
+            { title: "OPC 43 Grade", desc: "Most commonly used for residential and commercial construction. Minimum 43 MPa at 28 days. Suitable for all general concrete work, including RCC." },
+            { title: "OPC 53 Grade", desc: "High-strength cement with minimum 53 MPa at 28 days. Used for high-rise buildings, bridges, and pre-stressed concrete. Provides faster construction due to high early strength." },
+            { title: "PPC (Portland Pozzolana Cement)", desc: "Contains fly ash (15-35%). Better workability, lower heat of hydration, and improved durability. Ideal for mass concrete, marine structures, and hydraulic works." },
+            { title: "Sulfate Resisting Cement", desc: "Resists sulfate attack in soils and water. Used for foundations in sulfate-rich soils, sewage treatment plants, and coastal structures." },
+          ].map((type) => (
+            <div class="card-container">
+              <h3 class="text-body-strong text-ink mb-2">{type.title}</h3>
+              <p class="text-body text-ink-muted-80">{type.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section class="mb-12">
+        <h2 class="text-display-md text-ink mb-4">Cement Grade Selection Guide</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left card-container">
+            <thead>
+              <tr class="border-b border-divider-soft">
+                <th class="py-3 px-4 text-caption-strong text-ink">Application</th>
+                <th class="py-3 px-4 text-caption-strong text-ink">Recommended Grade</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-divider-soft">
+              {[
+                ["Foundation & Footings", "OPC 43 or PPC"],
+                ["Columns & Beams (RCC)", "OPC 43 or OPC 53"],
+                ["Slabs & Roofs", "OPC 43"],
+                ["Plastering", "PPC or OPC 33"],
+                ["Masonry & Brickwork", "OPC 33 or PPC"],
+                ["Marine Structures", "PPC or SR Cement"],
+                ["High-rise Buildings", "OPC 53"],
+              ].map((row) => (
+                <tr class="hover:bg-canvas-parchment transition-colors">
+                  {row.map((cell) => (<td class="py-3 px-4 text-body text-ink-muted-80">{cell}</td>))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </article>
+  <CTASection title="Calculate Cement Requirements" description="Use our Cement Calculator to determine exactly how much cement you need." ctaText="Try Cement Calculator" ctaHref="/cement-calculator" />
+  <FAQSection items={[
+    { question: "Can I mix different grades of cement?", answer: "No, always use a single grade of cement from the same manufacturer for consistent quality and strength." },
+    { question: "How should cement be stored on site?", answer: "Store cement in a dry, covered area off the ground. Use within 3 months of purchase. Discard any cement that has lumps or signs of moisture." },
+    { question: "What is the shelf life of cement?", answer: "Cement typically has a shelf life of 3 months when stored properly. After this, strength may decrease by up to 20%." },
+  ]} />
+</BaseLayout>

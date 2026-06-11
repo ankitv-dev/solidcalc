@@ -1,0 +1,125 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import CalculatorBase from "../components/CalculatorBase.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+import { META_DESCRIPTIONS } from "../lib/seo/keywords";
+---
+
+<BaseLayout
+  title="Stairs Calculator - Concrete Volume & Step Design"
+  description={META_DESCRIPTIONS.stairs}
+  canonical="https://solidcalc.vercel.app/stairs-calculator"
+  structuredData={[
+    softwareAppSchema("Stairs Calculator", META_DESCRIPTIONS.stairs, "https://solidcalc.vercel.app/stairs-calculator"),
+    faqSchema([
+      { question: "How do I calculate concrete for stairs?", answer: "Calculate the volume of each step (tread × riser/2 × width) plus the waist slab. Sum all steps and add a landing volume if applicable." },
+      { question: "What is the standard stair rise and run?", answer: "Standard riser height: 7 inches (178 mm). Standard tread depth: 11 inches (280 mm). The sum of riser + tread should be 17-18 inches." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Stairs Calculator", url: "/stairs-calculator" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Stairs Calculator</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate concrete volume for staircases. Enter total rise, tread depth, riser height, and stair width for accurate material estimates.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container">
+          <CalculatorBase
+            calculatorId="stairs-calc"
+            inputs={[
+              {
+                id: "dimensions",
+                label: "Stair Dimensions",
+                fields: [
+                  { id: "totalRise", label: "Total Rise", placeholder: "e.g. 10", defaultValue: "10" },
+                  { id: "treadDepth", label: "Tread Depth", placeholder: "e.g. 11", defaultValue: "11" },
+                  { id: "riserHeight", label: "Riser Height", placeholder: "e.g. 7", defaultValue: "7" },
+                  { id: "stairWidth", label: "Stair Width", placeholder: "e.g. 4", defaultValue: "4" },
+                ],
+              },
+            ]}
+            outputs={[
+              {
+                id: "step-results",
+                label: "Step Design",
+                fields: [
+                  { id: "numberOfSteps", label: "Number of Steps", highlight: true },
+                ],
+              },
+              {
+                id: "material-results",
+                label: "Concrete & Materials",
+                fields: [
+                  { id: "volumeM3", label: "Concrete Volume", unit: "m³" },
+                  { id: "cementKg", label: "Cement", unit: "kg" },
+                  { id: "sandKg", label: "Sand", unit: "kg" },
+                  { id: "aggregateKg", label: "Aggregate", unit: "kg" },
+                  { id: "cementBags", label: "Cement Bags Required", highlight: true },
+                ],
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Unit Selection</h3>
+          <div class="flex flex-wrap gap-2">
+            {["ft", "in", "m", "cm", "mm"].map((u) => (
+              <label class="flex items-center gap-2 px-3 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                <input type="radio" name="unit" value={u} checked={u === "ft"} class="sr-only" />
+                {u}
+              </label>
+            ))}
+          </div>
+          <div class="border-t border-divider-soft pt-4">
+            <h4 class="text-caption-strong text-ink-muted-80 mb-2">Design Tips</h4>
+            <ul class="text-caption text-ink-muted-80 space-y-1 list-disc list-inside">
+              <li>Riser + Tread = 17-18 in</li>
+              <li>Riser × Tread = 70-75 in</li>
+              <li>Min tread: 10 in</li>
+              <li>Max riser: 7.5 in</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Steps = Total Rise ÷ Riser Height | Volume = Steps × (Tread × Riser/2 + Tread × Waist) × Width"
+    steps={[
+      "Measure the total vertical rise from the bottom to the top of the staircase.",
+      "Choose a comfortable riser height (typically 7 inches).",
+      "Choose a tread depth (typically 11 inches).",
+      "The number of steps is calculated by dividing total rise by riser height.",
+      "Concrete volume includes the triangular step area plus the waist slab thickness.",
+      "Add wastage allowance and the calculator provides material quantities.",
+    ]}
+    example={`Example: Staircase\n\nTotal Rise: 10 ft, Tread: 11", Riser: 7", Width: 4 ft\n\nSteps = 120" ÷ 7" = 17 steps\n\nEach step volume ≈ (11 × 3.5 + 11 × 3) × 48 = 3,432 in³\nTotal ≈ 17 × 3,432 + landing = 58,344 in³ = 0.96 m³\n\nWith 5% wastage: 1.01 m³\n\nMaterials:\nCement: ~0.52 tons → 11 bags (50 kg)\nSand: ~0.78 tons\nAggregate: ~1.56 tons`}
+    relatedCalculators={[
+      { href: "/concrete-calculator", label: "Concrete Calculator" },
+      { href: "/slab-calculator", label: "Slab Calculator" },
+      { href: "/material-calculator", label: "Material Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "What is the best riser-to-tread ratio?", answer: "The ideal ratio is riser + tread = 17-18 inches. For example, a 7-inch riser with an 11-inch tread gives 18 inches. This provides comfortable and safe stairs." },
+    { question: "How thick should the stair waist be?", answer: "The waist (slab thickness) is typically 4-6 inches (100-150 mm) for residential stairs. Commercial stairs may require 6-8 inches." },
+    { question: "Do stairs need reinforcement?", answer: "Yes, concrete stairs require reinforcement. Use rebar in the waist slab and steps to prevent cracking under load." },
+  ]} />
+<script>
+  import "../lib/client-calculator";
+</script>
+
+</BaseLayout>
