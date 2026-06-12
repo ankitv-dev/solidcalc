@@ -9,13 +9,13 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
 ---
 
 <BaseLayout
-  title="Slab Calculator - Concrete Volume & Material Estimator"
+  title="Slab Calculator - Rectangular & Circular Concrete Slab Estimator"
   description={META_DESCRIPTIONS.slab}
   canonical="https://solidcalc.vercel.app/slab-calculator"
   structuredData={[
     softwareAppSchema("Slab Calculator", META_DESCRIPTIONS.slab, "https://solidcalc.vercel.app/slab-calculator"),
     faqSchema([
-      { question: "How do I calculate concrete for a slab?", answer: "Multiply slab length × width × thickness. Add 5-10% wastage. Our calculator also estimates cement, sand, and aggregate quantities." },
+      { question: "How do I calculate concrete for a slab?", answer: "Multiply slab length × width × thickness. For circular slabs, use π × radius² × thickness. Add 5-10% wastage. Our calculator supports both rectangular and circular shapes." },
       { question: "What is the standard slab thickness?", answer: "Residential slabs are typically 4-6 inches (100-150 mm). Commercial slabs may be 6-8 inches (150-200 mm) or more depending on loads." },
     ]),
   ]}
@@ -28,11 +28,23 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
   <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
     <div class="mb-10">
       <h1 class="text-display-lg text-ink mb-3">Slab Calculator</h1>
-      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate concrete volume, cement, sand, and aggregate quantities for slabs. Perfect for driveways, patios, foundations, and floor slabs.</p>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate concrete volume, cement, sand, and aggregate quantities for rectangular and circular slabs. Perfect for driveways, patios, foundations, and floor slabs.</p>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
       <div class="lg:col-span-3">
         <div class="card-container">
+          <div class="mb-6">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide mb-3">Slab Shape</h3>
+            <div class="flex flex-wrap gap-2">
+              {["rectangular", "circular"].map((t) => (
+                <label class="flex items-center gap-2 px-4 py-2 rounded-pill border border-hairline text-caption text-ink-muted-80 cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white has-[:checked]:border-primary">
+                  <input type="radio" name="slab-shape" value={t} checked={t === "rectangular"} class="sr-only" />
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </label>
+              ))}
+            </div>
+          </div>
+
           <CalculatorBase
             calculatorId="slab-calc"
             inputs={[
@@ -40,9 +52,18 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
                 id: "dimensions",
                 label: "Slab Dimensions",
                 fields: [
-                  { id: "length", label: "Length", placeholder: "e.g. 20", defaultValue: "20" },
-                  { id: "width", label: "Width", placeholder: "e.g. 10", defaultValue: "10" },
+                  { id: "length", label: "Length (Rectangular)", placeholder: "e.g. 20", defaultValue: "20" },
+                  { id: "width", label: "Width (Rectangular)", placeholder: "e.g. 10", defaultValue: "10" },
+                  { id: "diameter", label: "Diameter (Circular)", placeholder: "e.g. 10", defaultValue: "10" },
                   { id: "thickness", label: "Thickness", placeholder: "e.g. 6", defaultValue: "6", step: "0.125" },
+                ],
+              },
+              {
+                id: "pricing",
+                label: "Cost Estimate (Optional)",
+                fields: [
+                  { id: "pricePerYard", label: "Price per Cubic Yard ($)", placeholder: "e.g. 150", defaultValue: "", step: "0.01" },
+                  { id: "pricePerBag", label: "Price per 50 kg Bag ($)", placeholder: "e.g. 8", defaultValue: "", step: "0.01" },
                 ],
               },
             ]}
@@ -67,8 +88,27 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
                   { id: "cementBags", label: "Cement Bags Required", highlight: true },
                 ],
               },
+              {
+                id: "cost-results",
+                label: "Cost Estimate",
+                fields: [
+                  { id: "costPerYard", label: "Cost (by cubic yard)", highlight: true },
+                  { id: "costPerBag", label: "Cost (by bag)", highlight: true },
+                ],
+              },
+              {
+                id: "delivery-results",
+                label: "Delivery Info",
+                fields: [
+                  { id: "truckLoads", label: "Ready-Mix Truck Loads", highlight: true },
+                ],
+              },
             ]}
           />
+          <button type="button" class="btn-utility w-full justify-center mt-6" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print / Export PDF
+          </button>
         </div>
       </div>
       <div class="lg:col-span-2">
@@ -92,26 +132,30 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
   </div>
 
   <SEOContent
-    formula="Volume = Length × Width × Thickness"
+    formula="Volume = Length × Width × Thickness (rectangular) | Volume = π × r² × Thickness (circular)"
     steps={[
-      "Measure the length, width, and thickness of the slab in the same unit.",
-      "Calculate the volume by multiplying all three dimensions.",
+      "Select rectangular or circular slab shape.",
+      "For rectangular slabs: enter length, width, and thickness.",
+      "For circular slabs: enter diameter and thickness.",
       "Add wastage allowance (5-10%) for construction losses.",
       "Our calculator uses the standard 1:1.5:3 (M20) mix ratio to estimate materials.",
       "Cement quantity is calculated based on the dry volume method (multiply wet volume by 1.54).",
     ]}
-    example={`Example: Concrete Slab\n\nDimensions: 20 ft × 10 ft × 6 inches\nVolume = 20 × 10 × 0.5 = 100 ft³ = 2.83 m³\n\nWith 5% wastage: 2.97 m³\n\nMaterials for M20 (1:1.5:3):\nCement: 7.67 tons → 154 bags (50 kg)\nSand: 11.5 tons\nAggregate: 23 tons\nWater: ~383 liters`}
+    example={`Example: Rectangular Concrete Slab\n\nDimensions: 20 ft × 10 ft × 6 inches\nVolume = 20 × 10 × 0.5 = 100 ft³ = 2.83 m³\n\nExample: Circular Concrete Slab\n\nDiameter: 10 ft, Thickness: 6 inches\nRadius: 5 ft, Volume = π × 5² × 0.5 = 39.27 ft³ = 1.11 m³\n\nWith 5% wastage: add 5%\n\nMaterials for M20 (1:1.5:3):\nCement: varies by volume\nSand: varies by volume\nAggregate: varies by volume`}
     relatedCalculators={[
       { href: "/concrete-calculator", label: "Concrete Calculator" },
       { href: "/footing-calculator", label: "Footing Calculator" },
+      { href: "/column-calculator", label: "Column Calculator" },
+      { href: "/post-hole-calculator", label: "Post Hole Calculator" },
       { href: "/mix-design-calculator", label: "Mix Design Calculator" },
-      { href: "/material-calculator", label: "Material Calculator" },
     ]}
   />
 
   <FAQSection items={[
     { question: "What is the best concrete mix for a slab?", answer: "For most residential slabs, M20 (1:1.5:3) mix is recommended. For driveways and heavy-load areas, use M25 (1:1:2) or higher." },
     { question: "How thick should a concrete slab be?", answer: "Patios and walkways: 4 inches. Driveways: 5-6 inches. Garage floors: 5-6 inches. Commercial: 6-8 inches or as per structural design." },
+    { question: "Can I calculate circular slabs?", answer: "Yes! Select the 'Circular' shape option to calculate concrete volume for round slabs, circular patios, and round foundations." },
+    { question: "How do I estimate my slab cost?", answer: "Enter the price per cubic yard in the Cost Estimate section to get a total material cost. The calculator also shows ready-mix truck loads to help with delivery planning." },
     { question: "Do I need reinforcement in my slab?", answer: "Reinforcement is recommended for most slabs to control cracking. Use welded wire mesh or rebar depending on load requirements." },
   ]} />
 <script>

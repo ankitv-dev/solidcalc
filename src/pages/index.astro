@@ -7,15 +7,17 @@ import { Icon } from "astro-icon/components";
 import { websiteSchema, faqSchema } from "../lib/seo/structured-data";
 
 const calculators = [
-  { href: "/concrete-calculator", label: "Concrete Calculator", description: "Calculate concrete volume, weight, and bag requirements", icon: "calculator" },
-  { href: "/slab-calculator", label: "Slab Calculator", description: "Estimate concrete and material quantities for slabs", icon: "slab" },
-  { href: "/footing-calculator", label: "Footing Calculator", description: "Calculate footing concrete volume and materials", icon: "footing" },
+  { href: "/concrete-calculator", label: "Concrete Calculator", description: "Calculate concrete volume, weight, bag requirements, cost, and truck loads", icon: "calculator" },
+  { href: "/slab-calculator", label: "Slab Calculator", description: "Estimate concrete and material quantities for rectangular and circular slabs", icon: "slab" },
+  { href: "/footing-calculator", label: "Footing Calculator", description: "Calculate footing concrete volume and materials for all types", icon: "footing" },
   { href: "/column-calculator", label: "Column Calculator", description: "Estimate concrete for square and circular columns", icon: "column" },
+  { href: "/post-hole-calculator", label: "Post Hole Calculator", description: "Calculate concrete for fence posts, poles, and post holes", icon: "column" },
   { href: "/wall-calculator", label: "Wall Calculator", description: "Calculate wall concrete volume and materials", icon: "wall" },
   { href: "/stairs-calculator", label: "Stairs Calculator", description: "Estimate concrete volume for staircases", icon: "stairs" },
   { href: "/cement-calculator", label: "Cement Calculator", description: "Calculate cement bags needed for your project", icon: "cement" },
   { href: "/material-calculator", label: "Material Calculator", description: "Estimate cement, sand, and aggregate quantities", icon: "material" },
   { href: "/mix-design-calculator", label: "Mix Design Calculator", description: "Design concrete mix proportions for any grade", icon: "mix" },
+  { href: "/project-calculator", label: "Project Total Calculator", description: "Combine multiple elements into one concrete order total", icon: "calculator" },
   { href: "/unit-converter", label: "Unit Converter", description: "Convert between metric and imperial units", icon: "converter" },
 ];
 
@@ -39,7 +41,7 @@ const faqs = [
 
 <BaseLayout
   title="Free Concrete & Construction Calculators"
-  description="Free online concrete and construction material calculator. Calculate concrete volume, slab, footing, column, wall, and stairs. Trusted by contractors."
+  description="Free online concrete and construction material calculator. Calculate concrete volume, slab, footing, column, post hole, wall, and stairs. Trusted by contractors."
   structuredData={[websiteSchema(), faqSchema(faqs)]}
 >
   <!-- Hero -->
@@ -62,7 +64,7 @@ const faqs = [
         Accurate Concrete Calculations,<br />Simplified
       </h1>
       <p class="text-lead text-ink-muted-80 max-w-xl mx-auto mb-10 animate-fade-in-up animate-fade-in-up-2">
-        Free online concrete calculators for contractors, engineers, architects, and builders. Get precise volume, material, and cost estimates in seconds.
+        Free online concrete calculators for contractors, engineers, architects, and builders. Get precise volume, material, cost, and truck load estimates in seconds.
       </p>
       <div class="flex flex-wrap items-center justify-center gap-4 animate-fade-in-up animate-fade-in-up-3">
         <a href="/concrete-calculator" class="btn-primary text-lg px-8 py-4">Try Concrete Calculator</a>

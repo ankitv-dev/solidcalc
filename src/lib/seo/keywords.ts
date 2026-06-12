@@ -10,6 +10,9 @@ export const KEYWORDS = {
     "concrete bag calculator",
     "concrete material calculator",
     "concrete mix calculator",
+    "concrete cost estimator",
+    "concrete truck load calculator",
+    "how many yards of concrete in a truck",
   ],
   material: [
     "cement calculator",
@@ -37,14 +40,22 @@ export const KEYWORDS = {
     "concrete strength guide",
     "construction materials guide",
   ],
+  postHole: [
+    "post hole calculator",
+    "fence post concrete calculator",
+    "concrete for fence posts",
+    "post setting calculator",
+    "how much concrete per post hole",
+    "concrete for mailbox post",
+  ],
 };
 
 export const META_DESCRIPTIONS: Record<string, string> = {
   home:
     "Free online concrete calculator and construction material calculator. Accurately calculate concrete volume, slab materials, footing, column, wall, and stairs requirements. Trusted by contractors and builders.",
   concrete:
-    "Free concrete calculator: calculate concrete volume in cubic meters, cubic feet, cubic yards, bags required, and weight. Enter length, width, and depth for instant results.",
-  slab: "Free concrete slab calculator: calculate slab concrete volume, cement bags, sand, and aggregate quantities. Enter slab dimensions for instant material estimates.",
+    "Free concrete calculator: calculate concrete volume in cubic meters, cubic feet, cubic yards, bags required, cost estimate, and truck loads. Enter length, width, and depth for instant results.",
+  slab: "Free concrete slab calculator for rectangular and circular slabs. Calculate slab concrete volume, cement bags, sand, and aggregate quantities. Enter slab dimensions for instant material estimates.",
   footing:
     "Free concrete footing calculator for continuous, square, and circular footings. Calculate concrete volume and material requirements for foundation footings.",
   column: "Free concrete column calculator for square and circular columns. Calculate concrete volume, cement, sand, and aggregate requirements for columns.",

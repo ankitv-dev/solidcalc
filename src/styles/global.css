@@ -370,3 +370,29 @@
   .animate-fade-in-up-4 { animation-delay: 0.4s; }
   .animate-fade-in-up-5 { animation-delay: 0.5s; }
 }
+
+@media print {
+  nav, footer, .btn-utility, [data-calc-btn], #wastage-group, .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+  .card-container {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  #results-container {
+    display: block !important;
+  }
+  .hidden {
+    display: block !important;
+  }
+  input, select {
+    border: 1px solid #ccc !important;
+    background: white !important;
+  }
+}

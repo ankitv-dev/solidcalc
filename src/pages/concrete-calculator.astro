@@ -9,13 +9,13 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
 ---
 
 <BaseLayout
-  title="Concrete Calculator - Calculate Volume, Bags & Weight"
+  title="Concrete Calculator - Calculate Volume, Bags, Cost & Weight"
   description={META_DESCRIPTIONS.concrete}
   canonical="https://solidcalc.vercel.app/concrete-calculator"
   structuredData={[
     softwareAppSchema(
       "Concrete Calculator",
-      "Free concrete volume calculator. Calculate cubic meters, cubic feet, cubic yards, bags required, and weight.",
+      "Free concrete volume calculator. Calculate cubic meters, cubic feet, cubic yards, bags required, cost estimate, and weight.",
       "https://solidcalc.vercel.app/concrete-calculator"
     ),
     faqSchema([
@@ -33,7 +33,7 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
   <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
     <div class="mb-10">
       <h1 class="text-display-lg text-ink mb-3">Concrete Calculator</h1>
-      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate the exact concrete volume, weight, and number of bags needed for your project. Enter length, width, and depth below.</p>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Calculate the exact concrete volume, weight, number of bags, cost estimate, and truck loads needed for your project.</p>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
       <div class="lg:col-span-3">
@@ -48,6 +48,14 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
                   { id: "length", label: "Length", placeholder: "e.g. 20", defaultValue: "10" },
                   { id: "width", label: "Width", placeholder: "e.g. 10", defaultValue: "10" },
                   { id: "depth", label: "Depth", placeholder: "e.g. 6", defaultValue: "6", step: "0.125" },
+                ],
+              },
+              {
+                id: "pricing",
+                label: "Cost Estimate (Optional)",
+                fields: [
+                  { id: "pricePerYard", label: "Price per Cubic Yard ($)", placeholder: "e.g. 150", defaultValue: "", step: "0.01" },
+                  { id: "pricePerBag", label: "Price per 50 kg Bag ($)", placeholder: "e.g. 8", defaultValue: "", step: "0.01" },
                 ],
               },
             ]}
@@ -66,11 +74,31 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
                 label: "Weight & Bags",
                 fields: [
                   { id: "weightKg", label: "Weight", unit: "kg" },
+                  { id: "weightLbs", label: "Weight", unit: "lbs" },
                   { id: "bagsRequired", label: "Bags Required", highlight: true },
+                ],
+              },
+              {
+                id: "cost-results",
+                label: "Cost Estimate",
+                fields: [
+                  { id: "costPerYard", label: "Cost (by cubic yard)", highlight: true },
+                  { id: "costPerBag", label: "Cost (by bag)", highlight: true },
+                ],
+              },
+              {
+                id: "delivery-results",
+                label: "Delivery Info",
+                fields: [
+                  { id: "truckLoads", label: "Ready-Mix Truck Loads", highlight: true },
                 ],
               },
             ]}
           />
+          <button type="button" class="btn-utility w-full justify-center mt-6" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print / Export PDF
+          </button>
         </div>
       </div>
       <div class="lg:col-span-2">
@@ -101,8 +129,10 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
       "Add a wastage allowance (typically 5-10%) to account for spillage and variations.",
       "The calculator automatically converts volume to weight using standard concrete density of 2400 kg/m³.",
       "Divide total weight by bag size to determine the number of concrete bags required.",
+      "Enter optional price per cubic yard or per bag to estimate total material cost.",
+      "Truck load estimate: standard ready-mix trucks carry ~10 cubic yards per load.",
     ]}
-    example={`Example Calculation:\n\nSlab Dimensions: 20 ft × 10 ft × 6 inches\n\nDepth in feet: 6" ÷ 12 = 0.5 ft\nVolume = 20 × 10 × 0.5 = 100 ft³\nVolume in m³ = 100 ÷ 35.315 = 2.83 m³\n\nWith 5% wastage: 2.83 × 1.05 = 2.97 m³\nWeight: 2.97 × 2400 = 7,133 kg\n\n50 kg bags needed: 7,133 ÷ 50 = 143 bags`}
+    example={`Example Calculation:\n\nSlab Dimensions: 20 ft × 10 ft × 6 inches\n\nDepth in feet: 6" ÷ 12 = 0.5 ft\nVolume = 20 × 10 × 0.5 = 100 ft³\nVolume in m³ = 100 ÷ 35.315 = 2.83 m³\n\nWith 5% wastage: 2.83 × 1.05 = 2.97 m³\nWeight: 2.97 × 2400 = 7,133 kg\n\n50 kg bags needed: 7,133 ÷ 50 = 143 bags\n\nAt $150/yd³: ~$589\nAt $8/bag: ~$1,144\nTruck loads: 1 truck (10 yd³ capacity)`}
     commonMistakes={[
       "Forgetting to convert all measurements to the same unit before calculating.",
       "Not accounting for wastage — always add 5-10% extra for spillage and over-excavation.",
@@ -112,6 +142,7 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
       { href: "/slab-calculator", label: "Slab Calculator" },
       { href: "/footing-calculator", label: "Footing Calculator" },
       { href: "/column-calculator", label: "Column Calculator" },
+      { href: "/post-hole-calculator", label: "Post Hole Calculator" },
       { href: "/mix-design-calculator", label: "Mix Design Calculator" },
     ]}
   />
@@ -121,7 +152,9 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
     { question: "How accurate is the concrete calculator?", answer: "The calculator uses industry-standard formulas and concrete density values. Results are accurate to within normal construction tolerances. Always consult a structural engineer for critical applications." },
     { question: "What is the standard concrete density used?", answer: "We use 2400 kg/m³ (150 lb/ft³) for standard reinforced concrete. This is the typical density used in construction calculations worldwide." },
     { question: "How do I account for reinforcement steel?", answer: "The calculator estimates concrete volume only. Reinforcement steel occupies minimal volume (typically 1-2% of the section) and is usually ignored for concrete volume calculations." },
+    { question: "How do I estimate concrete cost?", answer: "Enter the price per cubic yard or price per bag in the Cost Estimate section. The calculator will show the total cost based on both pricing methods — by cubic yard for ready-mix delivery or by bag for DIY mixing." },
     { question: "Can I use this for large commercial projects?", answer: "Yes, the calculator works for any scale. However, for large commercial projects, we recommend getting a detailed mix design from a concrete supplier." },
+    { question: "How many cubic yards are in a concrete truck?", answer: "Standard ready-mix concrete trucks carry approximately 10 cubic yards (7.6 m³) of concrete. Larger trucks may carry up to 12-14 cubic yards." },
   ]} />
   <script>
     import "../lib/client-calculator";

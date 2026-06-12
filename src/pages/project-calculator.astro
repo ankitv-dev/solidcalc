@@ -1,0 +1,303 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SEOContent from "../components/SEOContent.astro";
+import FAQSection from "../components/FAQSection.astro";
+import { softwareAppSchema, faqSchema } from "../lib/seo/structured-data";
+---
+
+<BaseLayout
+  title="Project Total Calculator - Combine Slab, Footings, Columns & More"
+  description="Free multi-element concrete project calculator. Add slabs, footings, columns, post holes, and walls to get a combined total concrete volume, truck loads, and materials."
+  canonical="https://solidcalc.vercel.app/project-calculator"
+  structuredData={[
+    softwareAppSchema(
+      "Project Total Calculator",
+      "Free multi-element concrete project calculator. Combine slabs, footings, columns, post holes, and walls into one project total with combined order summary.",
+      "https://solidcalc.vercel.app/project-calculator"
+    ),
+    faqSchema([
+      { question: "How do I calculate total concrete for a multi-element project?", answer: "Add each element (slab, footing, column, etc.) individually with its volume. The project total calculator sums everything and shows combined material quantities and truck load requirements." },
+      { question: "Can I mix different concrete elements in one project?", answer: "Yes! You can add any combination of slabs, footings, columns, walls, stairs, and post holes to get a single combined order summary for your entire project." },
+    ]),
+  ]}
+>
+  <Breadcrumbs items={[
+    { name: "Home", url: "/" },
+    { name: "Project Total Calculator", url: "/project-calculator" },
+  ]} />
+
+  <div class="mx-auto w-full max-w-content px-6 md:px-10 py-section">
+    <div class="mb-10">
+      <h1 class="text-display-lg text-ink mb-3">Project Total Calculator</h1>
+      <p class="text-lg text-ink-muted-80 max-w-2xl">Combine multiple concrete elements — slabs, footings, columns, post holes, walls — into one project total. Get a combined concrete order summary with truck load requirements.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3">
+        <div class="card-container" id="project-calc">
+          <div class="space-y-4">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Add Project Element</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <div class="flex flex-col gap-1.5 sm:col-span-2">
+                <label for="element-name" class="text-caption text-ink-muted-80">Element Name</label>
+                <input type="text" id="element-name" placeholder="e.g. Driveway Slab" class="input-field" />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="element-type" class="text-caption text-ink-muted-80">Type</label>
+                <select id="element-type" class="input-field appearance-none cursor-pointer">
+                  <option value="slab">Slab</option>
+                  <option value="footing">Footing</option>
+                  <option value="column">Column</option>
+                  <option value="post-hole">Post Hole</option>
+                  <option value="wall">Wall</option>
+                  <option value="stairs">Stairs</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="element-volume" class="text-caption text-ink-muted-80">Volume (yd³)</label>
+                <input type="number" id="element-volume" placeholder="e.g. 2.5" class="input-field" step="0.01" min="0" />
+              </div>
+            </div>
+            <button type="button" id="add-element-btn" class="btn-primary w-full justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add to Project
+            </button>
+          </div>
+
+          <div id="project-items" class="hidden mt-6 space-y-3 pt-6 border-t border-divider-soft">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Project Elements</h3>
+            <div id="items-list" class="space-y-2"></div>
+          </div>
+
+          <div id="project-totals" class="hidden mt-6 space-y-4 pt-6 border-t border-divider-soft">
+            <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">Project Total</h3>
+            <div class="divide-y divide-divider-soft">
+              <div class="flex items-center justify-between py-3 px-3 rounded-lg bg-primary/5">
+                <span class="text-caption text-ink-muted-80">Total Volume</span>
+                <span id="total-volume" class="font-display text-lg font-semibold text-ink">-</span>
+              </div>
+              <div class="flex items-center justify-between py-3 px-3">
+                <span class="text-caption text-ink-muted-80">Volume (ft³)</span>
+                <span id="total-ft3" class="font-display text-lg font-semibold text-ink">-</span>
+              </div>
+              <div class="flex items-center justify-between py-3 px-3">
+                <span class="text-caption text-ink-muted-80">Volume (m³)</span>
+                <span id="total-m3" class="font-display text-lg font-semibold text-ink">-</span>
+              </div>
+              <div class="flex items-center justify-between py-3 px-3 rounded-lg bg-primary/5">
+                <span class="text-caption text-ink-muted-80">Ready-Mix Truck Loads</span>
+                <span id="total-trucks" class="font-display text-lg font-semibold text-ink">-</span>
+              </div>
+              <div class="flex items-center justify-between py-3 px-3 rounded-lg bg-primary/5">
+                <span class="text-caption text-ink-muted-80">Cement Bags Required (50 kg)</span>
+                <span id="total-bags" class="font-display text-lg font-semibold text-ink">-</span>
+              </div>
+              <div class="flex items-center justify-between py-3 px-3">
+                <span class="text-caption text-ink-muted-80">Cement</span>
+                <span id="total-cement" class="font-display text-lg font-semibold text-ink">-</span>
+              </div>
+              <div class="flex items-center justify-between py-3 px-3">
+                <span class="text-caption text-ink-muted-80">Sand</span>
+                <span id="total-sand" class="font-display text-lg font-semibold text-ink">-</span>
+              </div>
+              <div class="flex items-center justify-between py-3 px-3">
+                <span class="text-caption text-ink-muted-80">Aggregate</span>
+                <span id="total-aggregate" class="font-display text-lg font-semibold text-ink">-</span>
+              </div>
+            </div>
+            <button type="button" id="clear-project-btn" class="btn-secondary w-full justify-center">Clear All</button>
+            <button type="button" class="btn-utility w-full justify-center" onclick="window.print()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print / Export PDF
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="card-container space-y-4">
+          <h3 class="text-caption-strong text-ink-muted-80 uppercase tracking-wide">How It Works</h3>
+          <div class="text-caption text-ink-muted-80 space-y-3">
+            <p>1. Calculate volume for each element using our individual calculators.</p>
+            <p>2. Come back here and add each element by name and volume (in cubic yards).</p>
+            <p>3. Get a combined project total with truck load and material estimates.</p>
+          </div>
+          <div class="border-t border-divider-soft pt-4">
+            <h4 class="text-caption-strong text-ink-muted-80 mb-2">Quick Links</h4>
+            <div class="flex flex-wrap gap-2">
+              <a href="/slab-calculator" class="text-caption text-primary hover:underline">Slab Calculator</a>
+              <a href="/footing-calculator" class="text-caption text-primary hover:underline">Footing Calculator</a>
+              <a href="/column-calculator" class="text-caption text-primary hover:underline">Column Calculator</a>
+              <a href="/post-hole-calculator" class="text-caption text-primary hover:underline">Post Hole Calculator</a>
+              <a href="/wall-calculator" class="text-caption text-primary hover:underline">Wall Calculator</a>
+              <a href="/stairs-calculator" class="text-caption text-primary hover:underline">Stairs Calculator</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <SEOContent
+    formula="Total Volume = Sum of all element volumes | Truck Loads = Ceiling(Total yd³ / 10) | Materials per m³ based on M20 (1:1.5:3) mix"
+    steps={[
+      "Calculate concrete volume for each element using our dedicated calculators.",
+      "Return to this page and add each element with its volume in cubic yards.",
+      "Review the combined totals: total volume, truck loads, and material quantities.",
+      "Use the order summary to order from your ready-mix supplier.",
+    ]}
+    example={`Example Project: Driveway + Patio + Steps\n\nDriveway Slab: 20 ft × 12 ft × 5 in = 3.70 yd³\nPatio Slab: 12 ft × 10 ft × 4 in = 1.48 yd³\nFront Steps: 4 ft wide, 3 ft rise = 0.85 yd³\n\nProject Total: 6.03 yd³\n\nWith 10% wastage: 6.63 yd³\n\nTruck Loads: 1 truck (6.63 of 10 yd³ capacity)\n\nM20 Mix Materials:\nCement: ~1,700 kg (34 bags)\nSand: ~2,550 kg\nAggregate: ~5,100 kg`}
+    relatedCalculators={[
+      { href: "/concrete-calculator", label: "Concrete Calculator" },
+      { href: "/slab-calculator", label: "Slab Calculator" },
+      { href: "/footing-calculator", label: "Footing Calculator" },
+      { href: "/column-calculator", label: "Column Calculator" },
+      { href: "/post-hole-calculator", label: "Post Hole Calculator" },
+    ]}
+  />
+
+  <FAQSection items={[
+    { question: "Why use a project total calculator?", answer: "A project total calculator gives you a single combined concrete order for the entire job. Instead of ordering separately for each element, you get one volume total, minimizing waste and ensuring you order enough concrete." },
+    { question: "How are material quantities calculated?", answer: "Material quantities are based on the M20 (1:1.5:3) standard mix ratio. Total volume is converted using the dry volume method (×1.54) and divided by mix proportions to get cement, sand, and aggregate quantities." },
+    { question: "How many truck loads will I need?", answer: "Standard ready-mix concrete trucks carry approximately 10 cubic yards (7.6 m³). We divide your total volume by 10 and round up to give you the minimum number of truck loads needed." },
+  ]} />
+
+  <script>
+    function fmt(n, d = 2) {
+      return Number(n.toFixed(d)).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: d });
+    }
+
+    interface ProjectItem {
+      id: number;
+      name: string;
+      type: string;
+      volumeYd3: number;
+    }
+
+    let projectItems: ProjectItem[] = [];
+    let nextId = 1;
+
+    const STORAGE_KEY = "solidcalc-project";
+
+    function loadProject() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const data = JSON.parse(saved);
+          projectItems = data.items || [];
+          nextId = data.nextId || 1;
+        }
+      } catch {}
+      renderProject();
+    }
+
+    function saveProject() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ items: projectItems, nextId }));
+      } catch {}
+    }
+
+    function addItem() {
+      const nameInput = document.getElementById("element-name") as HTMLInputElement;
+      const typeSelect = document.getElementById("element-type") as HTMLSelectElement;
+      const volumeInput = document.getElementById("element-volume") as HTMLInputElement;
+
+      const name = nameInput.value.trim();
+      const type = typeSelect.value;
+      const volume = parseFloat(volumeInput.value);
+
+      if (!name) { alert("Please enter an element name."); return; }
+      if (!volume || volume <= 0) { alert("Please enter a valid volume greater than 0."); return; }
+
+      projectItems.push({ id: nextId++, name, type, volumeYd3: volume });
+      nameInput.value = "";
+      volumeInput.value = "";
+      saveProject();
+      renderProject();
+    }
+
+    function removeItem(id: number) {
+      projectItems = projectItems.filter((item) => item.id !== id);
+      saveProject();
+      renderProject();
+    }
+
+    function clearAll() {
+      if (projectItems.length === 0) return;
+      if (!confirm("Clear all project elements?")) return;
+      projectItems = [];
+      saveProject();
+      renderProject();
+    }
+
+    function renderProject() {
+      const container = document.getElementById("project-items");
+      const totalsContainer = document.getElementById("project-totals");
+      const list = document.getElementById("items-list");
+
+      if (!container || !totalsContainer || !list) return;
+
+      if (projectItems.length === 0) {
+        container.classList.add("hidden");
+        totalsContainer.classList.add("hidden");
+        return;
+      }
+
+      container.classList.remove("hidden");
+      totalsContainer.classList.remove("hidden");
+
+      list.innerHTML = projectItems
+        .map(
+          (item) => `
+            <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-canvas-parchment">
+              <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-pill text-xs font-medium bg-primary/10 text-primary">${item.type}</span>
+                <span class="text-caption text-ink">${item.name}</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-caption-strong text-ink">${fmt(item.volumeYd3, 3)} yd³</span>
+                <button type="button" class="text-ink-muted-48 hover:text-red-500 transition-colors" data-remove="${item.id}">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+            </div>
+          `
+        )
+        .join("");
+
+      list.querySelectorAll("[data-remove]").forEach((btn) => {
+        btn.addEventListener("click", () => removeItem(parseInt((btn as HTMLElement).dataset.remove!)));
+      });
+
+      const totalYd3 = projectItems.reduce((sum, item) => sum + item.volumeYd3, 0);
+      const withWastage = totalYd3 * 1.05;
+      const totalM3 = totalYd3 * 0.764555;
+      const totalFt3 = totalYd3 * 27;
+      const truckLoads = Math.ceil(withWastage / 10);
+      const dryVol = totalM3 * 1.54;
+      const cementKg = (1 / 5.5) * dryVol * 1440;
+      const sandKg = (1.5 / 5.5) * dryVol * 1600;
+      const aggregateKg = (3 / 5.5) * dryVol * 1500;
+      const cementBags = Math.ceil(cementKg / 50);
+
+      document.getElementById("total-volume")!.innerHTML = `${fmt(totalYd3, 3)} yd³ <span class="text-sm font-normal text-ink-muted-80">(+5% wastage: ${fmt(withWastage, 3)} yd³)</span>`;
+      document.getElementById("total-ft3")!.innerHTML = `${fmt(totalFt3)} ft³`;
+      document.getElementById("total-m3")!.innerHTML = `${fmt(totalM3)} m³`;
+      document.getElementById("total-trucks")!.innerHTML = `${truckLoads} truck${truckLoads !== 1 ? "s" : ""} (${fmt(withWastage, 2)} yd³ / 10 yd³ per load)`;
+      document.getElementById("total-bags")!.innerHTML = `${cementBags} bags`;
+      document.getElementById("total-cement")!.innerHTML = `${fmt(cementKg)} kg`;
+      document.getElementById("total-sand")!.innerHTML = `${fmt(sandKg)} kg`;
+      document.getElementById("total-aggregate")!.innerHTML = `${fmt(aggregateKg)} kg`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadProject();
+      document.getElementById("add-element-btn")?.addEventListener("click", addItem);
+      document.getElementById("clear-project-btn")?.addEventListener("click", clearAll);
+      document.querySelectorAll("#element-name, #element-volume").forEach((el) => {
+        el.addEventListener("keydown", (e) => {
+          if ((e as KeyboardEvent).key === "Enter") addItem();
+        });
+      });
+    });
+  </script>
+</BaseLayout>

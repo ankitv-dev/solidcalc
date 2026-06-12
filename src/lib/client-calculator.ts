@@ -90,6 +90,17 @@ function fmt(n: number, d: number = 2): string {
   });
 }
 
+function fmtCost(n: number): string {
+  if (n <= 0) return "-";
+  return "$" + fmt(n, 2);
+}
+
+function fmtTruckLoads(yd3: number): string {
+  if (yd3 <= 0) return "-";
+  const loads = Math.ceil(yd3 / 10);
+  return `${fmt(loads)} truck${loads !== 1 ? "s" : ""} (${fmt(yd3, 2)} yd³ / 10 yd³ per load)`;
+}
+
 register("concrete", (inputs) => {
   const l = inputs.length || 0;
   const w = inputs.width || 0;
@@ -106,19 +117,30 @@ register("concrete", (inputs) => {
   const weightKg = volumeM3 * 2400;
   const weightLbs = weightKg * 2.20462;
   const bags = Math.ceil(weightKg / 50);
-  return { volumeM3: `${fmt(volumeM3)} m³`, volumeFt3: `${fmt(volumeFt3)} ft³`, volumeYd3: `${fmt(volumeYd3, 3)} yd³`, weightKg: `${fmt(weightKg)} kg`, weightLbs: `${fmt(weightLbs)} lbs`, bagsRequired: `${bags} bags (50 kg)` };
+  const pricePerYard = inputs.pricePerYard || 0;
+  const pricePerBag = inputs.pricePerBag || 0;
+  const costByYard = pricePerYard * volumeYd3;
+  const costByBag = pricePerBag * bags;
+  return { volumeM3: `${fmt(volumeM3)} m³`, volumeFt3: `${fmt(volumeFt3)} ft³`, volumeYd3: `${fmt(volumeYd3, 3)} yd³`, weightKg: `${fmt(weightKg)} kg`, weightLbs: `${fmt(weightLbs)} lbs`, bagsRequired: `${bags} bags (50 kg)`, truckLoads: fmtTruckLoads(volumeYd3), costPerYard: fmtCost(costByYard), costPerBag: fmtCost(costByBag) };
 });
 
 register("slab", (inputs) => {
-  const l = inputs.length || 0;
-  const w = inputs.width || 0;
-  const t = inputs.thickness || 0;
+  const shapeEl = document.querySelector('input[name="slab-shape"]:checked') as HTMLInputElement;
+  const shape = shapeEl?.value || "rectangular";
   const u = inputs.unit || "ft";
   const wastage = inputs.wastage || 0;
-  const lMm = toMM(l, u);
-  const wMm = toMM(w, u);
-  const tMm = toMM(t, u);
-  let volumeM3 = (lMm * wMm * tMm) / 1e9;
+  let volumeM3 = 0;
+  if (shape === "circular") {
+    const d = inputs.diameter || 0;
+    const t = inputs.thickness || 0;
+    const r = toMM(d, u) / 2;
+    volumeM3 = (Math.PI * r * r * toMM(t, u)) / 1e9;
+  } else {
+    const l = inputs.length || 0;
+    const w = inputs.width || 0;
+    const t = inputs.thickness || 0;
+    volumeM3 = (toMM(l, u) * toMM(w, u) * toMM(t, u)) / 1e9;
+  }
   volumeM3 *= (1 + wastage / 100);
   const dryVol = volumeM3 * 1.54;
   const cementKg = (1 / 5.5) * dryVol * 1440;
@@ -126,7 +148,12 @@ register("slab", (inputs) => {
   const aggregateKg = (3 / 5.5) * dryVol * 1500;
   const waterL = cementKg * 0.5;
   const cementBags = Math.ceil(cementKg / 50);
-  return { volumeM3: `${fmt(volumeM3)} m³`, volumeFt3: `${fmt(volumeM3 / 0.0283168)} ft³`, volumeYd3: `${fmt(volumeM3 / 0.764555, 3)} yd³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, waterLiters: `${fmt(waterL)} L`, cementBags: `${cementBags} bags (50 kg)` };
+  const volumeYd3 = volumeM3 / 0.764555;
+  const pricePerYard = inputs.pricePerYard || 0;
+  const pricePerBag = inputs.pricePerBag || 0;
+  const costByYard = pricePerYard * volumeYd3;
+  const costByBag = pricePerBag * cementBags;
+  return { volumeM3: `${fmt(volumeM3)} m³`, volumeFt3: `${fmt(volumeM3 / 0.0283168)} ft³`, volumeYd3: `${fmt(volumeYd3, 3)} yd³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, waterLiters: `${fmt(waterL)} L`, cementBags: `${cementBags} bags (50 kg)`, truckLoads: fmtTruckLoads(volumeYd3), costPerYard: fmtCost(costByYard), costPerBag: fmtCost(costByBag) };
 });
 
 register("footing", (inputs) => {
@@ -157,7 +184,8 @@ register("footing", (inputs) => {
   const sandKg = (1.5 / 5.5) * dryVol * 1600;
   const aggregateKg = (3 / 5.5) * dryVol * 1500;
   const cementBags = Math.ceil(cementKg / 50);
-  return { volumeM3: `${fmt(volumeM3)} m³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags` };
+  const volumeYd3 = volumeM3 / 0.764555;
+  return { volumeM3: `${fmt(volumeM3)} m³`, volumeFt3: `${fmt(volumeM3 / 0.0283168)} ft³`, volumeYd3: `${fmt(volumeYd3, 3)} yd³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags`, truckLoads: fmtTruckLoads(volumeYd3) };
 });
 
 register("column", (inputs) => {
@@ -183,7 +211,8 @@ register("column", (inputs) => {
   const sandKg = (1.5 / 5.5) * dryVol * 1600;
   const aggregateKg = (3 / 5.5) * dryVol * 1500;
   const cementBags = Math.ceil(cementKg / 50);
-  return { volumeM3: `${fmt(volumeM3)} m³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags` };
+  const volumeYd3 = volumeM3 / 0.764555;
+  return { volumeM3: `${fmt(volumeM3)} m³`, volumeFt3: `${fmt(volumeM3 / 0.0283168)} ft³`, volumeYd3: `${fmt(volumeYd3, 3)} yd³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags`, truckLoads: fmtTruckLoads(volumeYd3) };
 });
 
 register("wall", (inputs) => {
@@ -199,7 +228,8 @@ register("wall", (inputs) => {
   const sandKg = (1.5 / 5.5) * dryVol * 1600;
   const aggregateKg = (3 / 5.5) * dryVol * 1500;
   const cementBags = Math.ceil(cementKg / 50);
-  return { volumeM3: `${fmt(volumeM3)} m³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags` };
+  const volumeYd3 = volumeM3 / 0.764555;
+  return { volumeM3: `${fmt(volumeM3)} m³`, volumeFt3: `${fmt(volumeM3 / 0.0283168)} ft³`, volumeYd3: `${fmt(volumeYd3, 3)} yd³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags`, truckLoads: fmtTruckLoads(volumeYd3) };
 });
 
 register("stairs", (inputs) => {
@@ -225,7 +255,8 @@ register("stairs", (inputs) => {
   const sandKg = (1.5 / 5.5) * dryVol * 1600;
   const aggregateKg = (3 / 5.5) * dryVol * 1500;
   const cementBags = Math.ceil(cementKg / 50);
-  return { numberOfSteps: `${steps} steps`, volumeM3: `${fmt(volumeM3)} m³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags` };
+  const volumeYd3 = volumeM3 / 0.764555;
+  return { numberOfSteps: `${steps} steps`, volumeM3: `${fmt(volumeM3)} m³`, volumeFt3: `${fmt(volumeM3 / 0.0283168)} ft³`, volumeYd3: `${fmt(volumeYd3, 3)} yd³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags`, truckLoads: fmtTruckLoads(volumeYd3) };
 });
 
 register("cement", (inputs) => {
@@ -235,7 +266,8 @@ register("cement", (inputs) => {
   const cementBags = Math.ceil(cementKg / 50);
   const sandKg = (1.5 / 5.5) * dryVol * 1600;
   const aggregateKg = (3 / 5.5) * dryVol * 1500;
-  return { cementKg: `${fmt(cementKg)} kg`, cementBags: `${cementBags} bags (50 kg)`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg` };
+  const volumeYd3 = volumeM3 / 0.764555;
+  return { cementKg: `${fmt(cementKg)} kg`, cementBags: `${cementBags} bags (50 kg)`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, truckLoads: fmtTruckLoads(volumeYd3) };
 });
 
 register("mix-design", (inputs) => {
@@ -260,7 +292,8 @@ register("mix-design", (inputs) => {
   const aggregateKg = (r.a / total) * dryVol * 1500;
   const waterL = cementKg * wcRatio;
   const cementBags = Math.ceil(cementKg / 50);
-  return { cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, waterLiters: `${fmt(waterL)} L`, cementBags: `${cementBags} bags (50 kg)`, mixRatio: `${r.c}:${r.s}:${r.a}` };
+  const volumeYd3 = volumeM3 / 0.764555;
+  return { cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, waterLiters: `${fmt(waterL)} L`, cementBags: `${cementBags} bags (50 kg)`, mixRatio: `${r.c}:${r.s}:${r.a}`, truckLoads: fmtTruckLoads(volumeYd3) };
 });
 
 register("material", (inputs) => {
@@ -275,7 +308,8 @@ register("material", (inputs) => {
   const sandKg = (r.s / total) * dryVol * 1600;
   const aggregateKg = (r.a / total) * dryVol * 1500;
   const cementBags = Math.ceil(cementKg / 50);
-  return { cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags` };
+  const volumeYd3 = volumeM3 / 0.764555;
+  return { cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags`, truckLoads: fmtTruckLoads(volumeYd3) };
 });
 
 register("converter", (inputs) => {
@@ -285,6 +319,39 @@ register("converter", (inputs) => {
   const mm = toMM(value, fromUnit);
   const result = fromMM(mm, toUnit);
   return { convertedResult: `${fmt(result, 4)} ${toUnit}` };
+});
+
+register("post-hole", (inputs) => {
+  const postShapeEl = document.querySelector('input[name="post-shape"]:checked') as HTMLInputElement;
+  const postShape = postShapeEl?.value || "square";
+  const u = inputs.unit || "in";
+  const wastage = inputs.wastage || 0;
+  const count = inputs.count || 1;
+  const holeDiam = inputs.holeDiameter || 0;
+  const holeDepth = inputs.holeDepth || 0;
+  const postSize = inputs.postSize || 0;
+  const holeR = toMM(holeDiam, u) / 2;
+  const holeVol = Math.PI * holeR * holeR * toMM(holeDepth, u);
+  let postVol = 0;
+  if (postShape === "square") {
+    postVol = toMM(postSize, u) * toMM(postSize, u) * toMM(holeDepth, u);
+  } else {
+    const postR = toMM(postSize, u) / 2;
+    postVol = Math.PI * postR * postR * toMM(holeDepth, u);
+  }
+  let concretePerHole = holeVol - postVol;
+  if (concretePerHole < 0) concretePerHole = 0;
+  let volumeM3 = (concretePerHole * count) / 1e9;
+  volumeM3 *= (1 + wastage / 100);
+  const volumeYd3 = volumeM3 / 0.764555;
+  const dryVol = volumeM3 * 1.54;
+  const cementKg = (1 / 5.5) * dryVol * 1440;
+  const sandKg = (1.5 / 5.5) * dryVol * 1600;
+  const aggregateKg = (3 / 5.5) * dryVol * 1500;
+  const cementBags = Math.ceil(cementKg / 50);
+  const pricePerBag = inputs.pricePerBag || 0;
+  const costByBag = pricePerBag * cementBags;
+  return { volumeM3: `${fmt(volumeM3)} m³`, volumeYd3: `${fmt(volumeYd3, 3)} yd³`, cementKg: `${fmt(cementKg)} kg`, sandKg: `${fmt(sandKg)} kg`, aggregateKg: `${fmt(aggregateKg)} kg`, cementBags: `${cementBags} bags`, costPerBag: fmtCost(costByBag), truckLoads: fmtTruckLoads(volumeYd3), perHole: `${fmt(concretePerHole / 1e9, 4)} m³ per hole` };
 });
 
 function init() {

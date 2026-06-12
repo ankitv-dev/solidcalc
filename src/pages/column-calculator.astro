@@ -65,14 +65,27 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
                 label: "Results",
                 fields: [
                   { id: "volumeM3", label: "Total Volume", unit: "m³" },
+                  { id: "volumeFt3", label: "Volume (ft³)", unit: "ft³" },
+                  { id: "volumeYd3", label: "Volume (yd³)", unit: "yd³" },
                   { id: "cementKg", label: "Cement", unit: "kg" },
                   { id: "sandKg", label: "Sand", unit: "kg" },
                   { id: "aggregateKg", label: "Aggregate", unit: "kg" },
                   { id: "cementBags", label: "Cement Bags Required", highlight: true },
                 ],
               },
+              {
+                id: "delivery-results",
+                label: "Delivery Info",
+                fields: [
+                  { id: "truckLoads", label: "Ready-Mix Truck Loads", highlight: true },
+                ],
+              },
             ]}
           />
+          <button type="button" class="btn-utility w-full justify-center mt-6" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print / Export PDF
+          </button>
         </div>
       </div>
       <div class="lg:col-span-2">
@@ -104,6 +117,7 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
     relatedCalculators={[
       { href: "/concrete-calculator", label: "Concrete Calculator" },
       { href: "/footing-calculator", label: "Footing Calculator" },
+      { href: "/post-hole-calculator", label: "Post Hole Calculator" },
       { href: "/mix-design-calculator", label: "Mix Design Calculator" },
     ]}
   />
@@ -112,6 +126,7 @@ import { META_DESCRIPTIONS } from "../lib/seo/keywords";
     { question: "What's the minimum column size for residential construction?", answer: "Minimum column size is typically 9×9 inches (230×230 mm) for residential buildings. Always follow local building codes." },
     { question: "How many columns do I need?", answer: "Column spacing depends on the structural design. Typically columns are spaced 10-15 feet apart. Consult a structural engineer for your specific project." },
     { question: "What concrete mix is best for columns?", answer: "M25 (1:1:2) or M30 (1:0.75:1.5) mix is recommended for reinforced concrete columns to achieve adequate compressive strength." },
+    { question: "Can I calculate round columns?", answer: "Yes! Select the 'Circular' column type to calculate concrete volume for round columns, pillars, and posts." },
   ]} />
 <script>
   import "../lib/client-calculator";
