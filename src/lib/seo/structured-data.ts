@@ -1,16 +1,23 @@
+const SITE_URL = "https://solidcalc.vercel.app";
+
+function toAbsolute(url: string) {
+  if (url.startsWith("http")) return url;
+  return `${SITE_URL}${url}`;
+}
+
 export function websiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "SolidCalc",
-    url: "https://solidcalc.vercel.app",
+    url: SITE_URL,
     description:
       "Free online concrete calculator and construction material calculator. Calculate concrete volume, slab materials, footing, column, wall, and stairs requirements with precision.",
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://solidcalc.vercel.app/search?q={search_term_string}",
+        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -57,7 +64,7 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: item.url,
+      item: toAbsolute(item.url),
     })),
   };
 }
