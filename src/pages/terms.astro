@@ -1,12 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { breadcrumbSchema } from "../lib/seo/structured-data";
 ---
 
 <BaseLayout
   title="Terms & Conditions"
   description="SolidCalc terms and conditions governing the use of our concrete calculators, construction tools, and website content."
   canonical="https://solidcalc.vercel.app/terms"
+  structuredData={[breadcrumbSchema([{name:"Home", url:"/"},{name:"Terms & Conditions", url:"/terms"}])]}
 >
   <Breadcrumbs items={[
     { name: "Home", url: "/" },

@@ -1,12 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { breadcrumbSchema } from "../lib/seo/structured-data";
 ---
 
 <BaseLayout
   title="Privacy Policy"
   description="SolidCalc privacy policy. Learn how we collect, use, and protect your personal information when using our concrete calculators and construction tools."
   canonical="https://solidcalc.vercel.app/privacy"
+  structuredData={[breadcrumbSchema([{name:"Home", url:"/"},{name:"Privacy Policy", url:"/privacy"}])]}
 >
   <Breadcrumbs items={[
     { name: "Home", url: "/" },

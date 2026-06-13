@@ -8,10 +8,12 @@ export interface Props {
   description: string;
   canonical?: string;
   ogImage?: string;
+  robots?: string;
   structuredData?: Record<string, unknown>[];
 }
 
-const { title, description, canonical, ogImage, structuredData } = Astro.props;
+const { title, description, canonical, ogImage, robots, structuredData } = Astro.props;
+const robotsContent = robots || "index, follow";
 const canonicalUrl = canonical || `https://solidcalc.vercel.app${Astro.url.pathname}`;
 ---
 
@@ -36,7 +38,7 @@ const canonicalUrl = canonical || `https://solidcalc.vercel.app${Astro.url.pathn
     <meta name="twitter:description" content={description} />
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robotsContent} />
     <meta name="theme-color" content="#0066cc" />
 
     <!-- Google tag (gtag.js) -->
