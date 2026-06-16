@@ -54,7 +54,7 @@ export const META_DESCRIPTIONS: Record<string, string> = {
   home:
     "Free online concrete calculator and construction material calculator. Accurately calculate concrete volume, slab materials, footing, column, wall, and stairs requirements. Trusted by contractors and builders.",
   concrete:
-    "Free concrete calculator: calculate concrete volume in cubic meters, cubic feet, cubic yards, bags required, cost estimate, and truck loads. Enter length, width, and depth for instant results.",
+    "Free concrete calculator for volume in cubic meters, feet, and yards. Estimate bags, cost, weight, and truck loads. Enter dimensions for instant results.",
   slab: "Free concrete slab calculator for rectangular and circular slabs. Calculate slab concrete volume, cement bags, sand, and aggregate quantities. Enter slab dimensions for instant material estimates.",
   footing:
     "Free concrete footing calculator for continuous, square, and circular footings. Calculate concrete volume and material requirements for foundation footings.",
