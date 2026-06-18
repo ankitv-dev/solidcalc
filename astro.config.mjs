@@ -1,13 +1,17 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  integrations: [icon({
-    include: {
-      lucide: ["hard-hat", "cog", "pencil-ruler", "hammer", "home"],
-    },
-  })],
+  integrations: [
+    icon({
+      include: {
+        lucide: ["hard-hat", "cog", "pencil-ruler", "hammer", "home"],
+      },
+    }),
+    sitemap(),
+  ],
   site: "https://solidcalc.vercel.app",
   vite: {
     plugins: [tailwindcss()],
