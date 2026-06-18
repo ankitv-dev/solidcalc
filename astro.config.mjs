@@ -10,7 +10,9 @@ export default defineConfig({
         lucide: ["hard-hat", "cog", "pencil-ruler", "hammer", "home"],
       },
     }),
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes("/404") && !page.includes("/500"),
+    }),
   ],
   site: "https://solidcalc.vercel.app",
   vite: {
